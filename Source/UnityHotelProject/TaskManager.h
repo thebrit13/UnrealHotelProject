@@ -1,0 +1,42 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+#pragma once
+
+#include "Person.h"
+#include "CoreMinimal.h"
+
+/**
+ * 
+ */
+class UNITYHOTELPROJECT_API TaskManager
+{
+public:
+	TaskManager();
+	~TaskManager();
+
+	enum PersonState
+	{
+		IDLE,
+		WALKING
+	};
+
+	void AddPerson(APerson* person);
+
+	void Tick(float deltaTime);
+
+private:
+	TArray<struct PersonTaskObject*> _PersonTaskList;
+
+	float currentTime = 0;
+	const float TASK_UPDATE_TIME = .5f;
+
+	void UpdateTasks();
+};
+
+struct PersonTaskObject
+{
+	UPROPERTY()
+	APerson* Person;
+
+	TaskManager::PersonState CurrentState;
+};
