@@ -6,9 +6,10 @@
 #include "GameFramework/Actor.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/SceneComponent.h"
-#include "TaskManager.h"
 #include "Person.h"
 #include "PeopleManager.generated.h"
+
+class AHotelManager;
 
 UCLASS()
 class UNITYHOTELPROJECT_API APeopleManager : public AActor
@@ -18,8 +19,6 @@ class UNITYHOTELPROJECT_API APeopleManager : public AActor
 public:	
 	// Sets default values for this actor's properties
 	APeopleManager();
-
-	TaskManager* taskManager;
 
 protected:
 	// Called when the game starts or when spawned
@@ -40,4 +39,13 @@ public:
 
 private:
 	void CreatePerson();
+
+	TArray<APerson*> GuestList;
+
+	TQueue<APerson*> GuestWaiting;
+
+	const float MIN_NEXT_PERSON_TIME = 5.0f;
+	const float MAX_NEXT_PERSON_TIME = 20.0f;
+	float _NextCreationTime;
+	float _CurrentTick;
 };

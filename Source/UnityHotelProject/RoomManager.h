@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "RoomActor.h"
+#include "Person.h"
 #include "RoomManager.generated.h"
 
 UCLASS()
@@ -15,6 +16,13 @@ class UNITYHOTELPROJECT_API ARoomManager : public AActor
 public:	
 	// Sets default values for this actor's properties
 	ARoomManager();
+
+	enum RoomStatus
+	{
+		READY,
+		DIRTY,
+		OCCUPIED
+	};
 
 protected:
 	// Called when the game starts or when spawned
@@ -28,4 +36,19 @@ public:
 	UPROPERTY(EditAnywhere)
 	TArray<ARoomActor*> RoomList;
 
+	TArray<struct RoomInfo*> RoomInfoList;
+
+	//Mostly for testing
+	void RoomClicked(FString ID);
+};
+
+
+struct RoomInfo
+{
+	FString ID;
+	UPROPERTY()
+	ARoomActor* RoomRef;
+	UPROPERTY()
+	APerson* PersonRef;
+	ARoomManager::RoomStatus RoomStatus;
 };

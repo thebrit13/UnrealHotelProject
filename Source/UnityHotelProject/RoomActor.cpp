@@ -1,7 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
+
 #include "RoomActor.h"
+#include "RoomManager.h"
 
 // Sets default values
 ARoomActor::ARoomActor()
@@ -16,6 +18,11 @@ void ARoomActor::BeginPlay()
 {
 	Super::BeginPlay();
 	
+}
+
+void ARoomActor::OnRoomClicked(FString ID)
+{
+	RoomManager->RoomClicked(ID);
 }
 
 // Called every frame

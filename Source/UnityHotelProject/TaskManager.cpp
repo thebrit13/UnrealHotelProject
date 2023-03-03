@@ -3,8 +3,9 @@
 
 #include "TaskManager.h"
 
-TaskManager::TaskManager()
+TaskManager::TaskManager(ARoomManager* roomManager)
 {
+	_RoomManager = roomManager;
 }
 
 TaskManager::~TaskManager()
@@ -33,6 +34,10 @@ void TaskManager::UpdateTasks()
 {
 	for (int i = 0; i < _PersonTaskList.Num(); i++)
 	{
-
+		if (_PersonTaskList[i]->CurrentState == PersonState::IDLE)
+		{
+			//_PersonTaskList[i]->Person->MoveToLocation(_RoomManager->RoomList[0]->GetActorLocation());
+			//_PersonTaskList[i]->CurrentState = PersonState::WALKING;
+		}
 	}
 }

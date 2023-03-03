@@ -4,32 +4,36 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "RoomActor.generated.h"
+#include "RoomManager.h"
+#include "PeopleManager.h"
+#include "TaskManager.h"
+#include "HotelManager.generated.h"
 
 UCLASS()
-class UNITYHOTELPROJECT_API ARoomActor : public AActor
+class UNITYHOTELPROJECT_API AHotelManager : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	ARoomActor();
+	AHotelManager();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UFUNCTION(BlueprintCallable)
-	void OnRoomClicked(FString ID);
+	UPROPERTY(EditInstanceOnly)
+	ARoomManager* RoomManager;
+
+	UPROPERTY(EditInstanceOnly)
+	APeopleManager* PeopleManager;
+
+	TaskManager* TaskManagerRef;
 
 public:	
-	UPROPERTY(EditInstanceOnly,BlueprintReadOnly)
-	FString roomID;
-
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	class ARoomManager* RoomManager;
-
+	void AssignGuestToRoom(FString roomID);
 
 };

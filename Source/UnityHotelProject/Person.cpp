@@ -32,3 +32,9 @@ void APerson::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
+void APerson::MoveToLocation(FVector loc)
+{
+	MoveToLocationBP();
+}
+
+

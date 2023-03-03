@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Person.h"
+#include "RoomManager.h"
 #include "CoreMinimal.h"
 
 /**
@@ -11,7 +12,7 @@
 class UNITYHOTELPROJECT_API TaskManager
 {
 public:
-	TaskManager();
+	TaskManager(ARoomManager* roomManager);
 	~TaskManager();
 
 	enum PersonState
@@ -31,6 +32,9 @@ private:
 	const float TASK_UPDATE_TIME = .5f;
 
 	void UpdateTasks();
+
+	UPROPERTY()
+	ARoomManager* _RoomManager;
 };
 
 struct PersonTaskObject

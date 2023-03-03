@@ -14,8 +14,6 @@ APeopleManager::APeopleManager()
 	SetRootComponent(Floor);
 	SpawnPoint = CreateDefaultSubobject<USceneComponent>(TEXT("SpawnPoint"));
 	SpawnPoint->AttachToComponent(RootComponent,FAttachmentTransformRules::KeepRelativeTransform);
-
-	taskManager = new TaskManager();
 }
 
 // Called when the game starts or when spawned
@@ -32,15 +30,22 @@ void APeopleManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (taskManager)
+	_CurrentTick += DeltaTime;
+	if (_CurrentTick >= _NextCreationTime)
 	{
-		taskManager->Tick(DeltaTime);
+		CreatePerson();
+		_CurrentTick = 0;
 	}
 }
 
 void APeopleManager::CreatePerson()
 {
 	APerson* createdPerson = GetWorld()->SpawnActor<APerson>(Person1Character, SpawnPoint->GetComponentLocation(), FRotator(0,180,0));
-	taskManager->AddPerson(createdPerson);
+	createdPerson->GuestID = FString::FromInt(GuestList.Num() + 1);
+
+	GuestList.Add(createdPerson);
+	GuestWaiting.Enqueue(createdPerson);
+
+	_NextCreationTime = FMath::RandRange(MIN_NEXT_PERSON_TIME, MAX_NEXT_PERSON_TIME);
 }
 
