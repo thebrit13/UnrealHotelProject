@@ -20,7 +20,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	UFUNCTION(BlueprintCallable)
-	void OnRoomClicked(FString ID);
+	void OnRoomClicked();
 
 public:	
 	UPROPERTY(EditInstanceOnly,BlueprintReadOnly)
@@ -29,6 +29,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UPROPERTY()
 	class ARoomManager* RoomManager;
 
 

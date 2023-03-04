@@ -38,6 +38,15 @@ void APeopleManager::Tick(float DeltaTime)
 	}
 }
 
+APerson* APeopleManager::GetWaitingPerson(APerson* &person)
+{
+	if (GuestWaiting.Dequeue(person))
+	{
+		return person;
+	} 
+	return nullptr;
+}
+
 void APeopleManager::CreatePerson()
 {
 	APerson* createdPerson = GetWorld()->SpawnActor<APerson>(Person1Character, SpawnPoint->GetComponentLocation(), FRotator(0,180,0));

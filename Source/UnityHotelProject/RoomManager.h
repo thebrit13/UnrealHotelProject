@@ -28,6 +28,12 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void RoomClickedBP(bool empty,bool dirty);
+
+	UPROPERTY(EditInstanceOnly)
+	ARoomManager* ARoomManagerBP;
+
 
 public:	
 	// Called every frame
@@ -36,10 +42,21 @@ public:
 	UPROPERTY(EditAnywhere)
 	TArray<ARoomActor*> RoomList;
 
+	UFUNCTION(BlueprintCallable)
+	void AssignRoomClickedBP();
+
+	UFUNCTION(BlueprintCallable)
+	void CleanRoomClickedBP();
+
 	TArray<struct RoomInfo*> RoomInfoList;
 
-	//Mostly for testing
-	void RoomClicked(FString ID);
+	void RoomClicked(FString roomID);
+
+	class AHotelManager* HotelManager;
+
+private:
+	RoomInfo* LastRoomClicked;
+
 };
 
 

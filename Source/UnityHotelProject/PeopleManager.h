@@ -9,8 +9,6 @@
 #include "Person.h"
 #include "PeopleManager.generated.h"
 
-class AHotelManager;
-
 UCLASS()
 class UNITYHOTELPROJECT_API APeopleManager : public AActor
 {
@@ -36,6 +34,8 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<APerson> Person1Character;
+
+	APerson* GetWaitingPerson(APerson*& person);
 
 private:
 	void CreatePerson();

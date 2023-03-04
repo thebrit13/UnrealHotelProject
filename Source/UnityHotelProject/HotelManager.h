@@ -6,7 +6,6 @@
 #include "GameFramework/Actor.h"
 #include "RoomManager.h"
 #include "PeopleManager.h"
-#include "TaskManager.h"
 #include "HotelManager.generated.h"
 
 UCLASS()
@@ -23,17 +22,18 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditInstanceOnly)
-	ARoomManager* RoomManager;
-
-	UPROPERTY(EditInstanceOnly)
-	APeopleManager* PeopleManager;
-
-	TaskManager* TaskManagerRef;
+	AHotelManager* HotelManagerBP;
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	void AssignGuestToRoom(FString roomID);
+	UPROPERTY(EditInstanceOnly)
+	ARoomManager* RoomManger;	
+	
+	UPROPERTY(EditInstanceOnly)
+	APeopleManager* PeopleManger;
+
+	//void AssignGuestToRoom(FString roomID);
 
 };

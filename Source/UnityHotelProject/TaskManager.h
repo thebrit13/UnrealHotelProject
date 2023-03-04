@@ -35,6 +35,8 @@ private:
 
 	UPROPERTY()
 	ARoomManager* _RoomManager;
+
+
 };
 
 struct PersonTaskObject

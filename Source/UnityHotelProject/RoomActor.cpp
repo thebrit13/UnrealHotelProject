@@ -20,9 +20,9 @@ void ARoomActor::BeginPlay()
 	
 }
 
-void ARoomActor::OnRoomClicked(FString ID)
+void ARoomActor::OnRoomClicked()
 {
-	RoomManager->RoomClicked(ID);
+	RoomManager->RoomClicked(roomID);
 }
 
 // Called every frame
