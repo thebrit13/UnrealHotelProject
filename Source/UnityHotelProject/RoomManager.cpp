@@ -43,6 +43,7 @@ void ARoomManager::Tick(float DeltaTime)
 void ARoomManager::AssignRoomClickedBP()
 {
 	UE_LOG(LogTemp, Warning, TEXT("ASSIGN"));
+	HotelManager->AssignGuestToRoom(LastRoomClicked);
 }
 
 void ARoomManager::CleanRoomClickedBP()
@@ -52,7 +53,6 @@ void ARoomManager::CleanRoomClickedBP()
 
 void ARoomManager::RoomClicked(FString roomID)
 {
-	//RoomInfo** roomInfo = RoomInfoList.FindByPredicate([roomID](const RoomInfo& room) {return room.ID == roomID;});
 	for (RoomInfo* ri : this->RoomInfoList)
 	{
 		if (ri->ID == roomID)

@@ -16,7 +16,7 @@ void AHotelManager::BeginPlay()
 {
 	Super::BeginPlay();
 	RoomManger->HotelManager = HotelManagerBP;
-	
+	_TimeManager = new TimeManager(SunLight);
 }
 
 // Called every frame
@@ -24,10 +24,25 @@ void AHotelManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (_TimeManager)
+	{
+		_TimeManager->Tick(DeltaTime);
+	}
 }
 
-//void AHotelManager::AssignGuestToRoom(FString roomID)
-//{
-//
-//}
+void AHotelManager::AssignGuestToRoom(RoomInfo* ri)
+{
+	if (ri)
+	{
+		APerson* person;
+		PeopleManger->GetWaitingPerson(person);
+		if (person)
+		{
+			ri->PersonRef = person;
+			ri->RoomStatus = ARoomManager::RoomStatus::OCCUPIED;
+
+			person->MoveToLocation(ri->RoomRef->GetActorLocation());
+		}
+	}
+}
 

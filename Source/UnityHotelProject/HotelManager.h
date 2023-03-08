@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "RoomManager.h"
 #include "PeopleManager.h"
+#include "Engine/DirectionalLight.h"
+#include "TimeManager.h"
 #include "HotelManager.generated.h"
 
 UCLASS()
@@ -24,6 +26,8 @@ protected:
 	UPROPERTY(EditInstanceOnly)
 	AHotelManager* HotelManagerBP;
 
+	TimeManager* _TimeManager;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -34,6 +38,9 @@ public:
 	UPROPERTY(EditInstanceOnly)
 	APeopleManager* PeopleManger;
 
-	//void AssignGuestToRoom(FString roomID);
+	UPROPERTY(EditInstanceOnly)
+	ADirectionalLight* SunLight;
+
+	void AssignGuestToRoom(RoomInfo* ri);
 
 };
