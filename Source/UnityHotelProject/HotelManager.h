@@ -41,6 +41,10 @@ public:
 	UPROPERTY(EditInstanceOnly)
 	ADirectionalLight* SunLight;
 
-	void AssignGuestToRoom(RoomInfo* ri);
+	UFUNCTION(BlueprintCallable)
+	FString GetTimeString();
 
+	void AssignGuestToRoom(RoomInfo* ri);
+	
+	void CheckOutTime();
 };

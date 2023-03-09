@@ -5,24 +5,31 @@
 #include "Engine/DirectionalLight.h"
 #include "CoreMinimal.h"
 
-
 /**
  * 
  */
 class UNITYHOTELPROJECT_API TimeManager
 {
 public:
-	TimeManager(ADirectionalLight* sunLight);
+	TimeManager(ADirectionalLight* sunLight,class AHotelManager* hotelManager);
 	~TimeManager();
 
 	void Tick(float deltaTime);
+
+	FString GetTimeInStandardFormat();
+
+	//void RegisterEventAtTime(TFunction<void> func, int hour, int minute);
 private:
-	const float DayTimeMinutes = 1.0f;
-	const float NightTimeMinutes = .5f;
+	const float DayTimeMinutes = .5f;
+	const float NightTimeMinutes = .25f;
+	const float DayTimeStart = 6;
+	const float DayTimeHours = 14;
+	const float NightTimeHours = 10;
 	const float MinDay = 180;
 	const float MaxDay = 360;
 	const float MinNight = 0;
 	const float MaxNight = 180;
+	const int CheckoutTime = 11;
 
 	float _TimeSeconds;
 	float _DayTimeSeconds;
@@ -31,4 +38,8 @@ private:
 	ADirectionalLight* SunLight;
 
 	void SetSunRotation();
+
+	AHotelManager* _HotelManagerRef;
+
+	//TMap<FString, void*> TimeToEventMap;
 };

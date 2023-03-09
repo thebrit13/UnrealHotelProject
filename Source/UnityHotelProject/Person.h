@@ -20,7 +20,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	UFUNCTION(BlueprintImplementableEvent)
-	void MoveToLocationBP();
+	void MoveToLocationBP(const FVector &loc);
 
 public:	
 	// Called every frame
