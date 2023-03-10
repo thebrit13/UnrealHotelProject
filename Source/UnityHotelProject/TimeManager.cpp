@@ -23,8 +23,9 @@ void TimeManager::Tick(float deltaTime)
 	if (_TimeSeconds >= _DayTimeSeconds + _NightTimeSeconds)
 	{
 		_TimeSeconds = 0;
+		_DayCount++;
 	}
-	//UE_LOG(LogTemp, Warning, TEXT("CALLED %f %f %f"),_TimeSeconds,_DayTimeSeconds,_NightTimeSeconds);
+	//UE_LOG(LogTemp, Warning, TEXT("CALLED %f"), _ActualTime);
 	SetSunRotation();
 }
 
@@ -34,6 +35,7 @@ FString TimeManager::GetTimeInStandardFormat()
 	if (_TimeSeconds < _DayTimeSeconds)
 	{
 		float hour = FMath::Lerp(DayTimeStart, DayTimeStart+DayTimeHours, _TimeSeconds / _DayTimeSeconds);
+		UpdateActualTime(hour);
 		if (hour >= 13)
 		{
 			hour -= 12;
@@ -44,6 +46,7 @@ FString TimeManager::GetTimeInStandardFormat()
 	else
 	{
 		float hour = FMath::Lerp(DayTimeStart + DayTimeHours, DayTimeStart + DayTimeHours + NightTimeHours, (_TimeSeconds - _DayTimeSeconds) / _NightTimeSeconds);
+		UpdateActualTime(hour);
 		if (hour >= 13)
 		{
 			if (hour < 25)
@@ -60,6 +63,16 @@ FString TimeManager::GetTimeInStandardFormat()
 		timeString = FString::Printf(TEXT("Time: %d:%d"), (int)hour, minute);
 	}
 	return timeString;
+}
+
+float TimeManager::GetActualTime()
+{
+	return _ActualTime;
+}
+
+int TimeManager::GetDay()
+{
+	return _DayCount;
 }
 
 //void TimeManager::RegisterEventAtTime(TFunction<void> func, int hour, int minute)
@@ -87,4 +100,14 @@ void TimeManager::SetSunRotation()
 	sunRot.Yaw = 250;
 
 	SunLight->SetActorRotation(sunRot);
+}
+
+void TimeManager::UpdateActualTime(float time)
+{
+	if (time >= 24)
+	{
+		time -= 24;
+	}
+
+	_ActualTime = time;
 }

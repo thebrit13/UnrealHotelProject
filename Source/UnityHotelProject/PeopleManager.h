@@ -37,6 +37,8 @@ public:
 
 	APerson* GetWaitingPerson(APerson*& person);
 
+	bool RemoveGuest(FString guestID);
+
 private:
 	void CreatePerson();
 
@@ -44,8 +46,8 @@ private:
 
 	TQueue<APerson*> GuestWaiting;
 
-	const float MIN_NEXT_PERSON_TIME = 5.0f;
-	const float MAX_NEXT_PERSON_TIME = 20.0f;
+	const float MIN_NEXT_PERSON_TIME = 50.0f;
+	const float MAX_NEXT_PERSON_TIME = 200.0f;
 	float _NextCreationTime;
 	float _CurrentTick;
 };

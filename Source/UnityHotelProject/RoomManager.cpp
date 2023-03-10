@@ -51,6 +51,33 @@ void ARoomManager::CleanRoomClickedBP()
 	UE_LOG(LogTemp, Warning, TEXT("CLEAN"));
 }
 
+TArray<APerson*> ARoomManager::GetGuestInRooms()
+{
+	TArray<APerson*> personList;
+	for (RoomInfo* ri : RoomInfoList)
+	{
+		if (ri->PersonRef)
+		{
+			personList.Add(ri->PersonRef);
+		}
+	}
+	return personList;
+}
+
+bool ARoomManager::CheckOutGuest(FString guestID)
+{
+	for (RoomInfo* ri : RoomInfoList)
+	{
+		if (ri->PersonRef && ri->PersonRef->GuestID == guestID)
+		{
+			ri->RoomRef = nullptr;
+			ri->RoomStatus = RoomStatus::DIRTY;
+			return true;
+		}
+	}
+	return false;
+}
+
 void ARoomManager::RoomClicked(FString roomID)
 {
 	for (RoomInfo* ri : this->RoomInfoList)

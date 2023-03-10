@@ -18,6 +18,15 @@ void APerson::BeginPlay()
 	
 }
 
+void APerson::MoveToLocationComplete(bool success)
+{
+	if (_CurrentCallback)
+	{
+		_CurrentCallback(success);
+		_CurrentCallback = nullptr;
+	}
+}
+
 // Called every frame
 void APerson::Tick(float DeltaTime)
 {
@@ -32,8 +41,9 @@ void APerson::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
-void APerson::MoveToLocation(FVector loc)
+void APerson::MoveToLocation(FVector loc, TFunction<void(bool)> callback)
 {
+	_CurrentCallback = callback;
 	MoveToLocationBP(loc);
 }
 

@@ -47,6 +47,20 @@ APerson* APeopleManager::GetWaitingPerson(APerson* &person)
 	return nullptr;
 }
 
+bool APeopleManager::RemoveGuest(FString guestID)
+{
+	for (int i = 0; i < GuestList.Num(); i++)
+	{
+		if (GuestList[i]->GuestID == guestID)
+		{
+			GetWorld()->DestroyActor(GuestList[i]);
+			GuestList.RemoveAt(i);
+			return true;
+		}
+	}
+	return false;
+}
+
 void APeopleManager::CreatePerson()
 {
 	APerson* createdPerson = GetWorld()->SpawnActor<APerson>(Person1Character, SpawnPoint->GetComponentLocation(), FRotator(0,180,0));

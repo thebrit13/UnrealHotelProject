@@ -8,6 +8,8 @@
 #include "Person.h"
 #include "RoomManager.generated.h"
 
+class AHotelManager;
+
 UCLASS()
 class UNITYHOTELPROJECT_API ARoomManager : public AActor
 {
@@ -48,17 +50,18 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void CleanRoomClickedBP();
 
-	TArray<struct RoomInfo*> RoomInfoList;
+	TArray<APerson*> GetGuestInRooms();
+
+	bool CheckOutGuest(FString guestID);
 
 	void RoomClicked(FString roomID);
 
-	class AHotelManager* HotelManager;
+	AHotelManager* HotelManager;
 
 private:
-	RoomInfo* LastRoomClicked;
-
+	struct RoomInfo* LastRoomClicked;
+	TArray<RoomInfo*> RoomInfoList;
 };
-
 
 struct RoomInfo
 {

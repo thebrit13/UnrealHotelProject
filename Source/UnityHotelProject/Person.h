@@ -22,6 +22,9 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent)
 	void MoveToLocationBP(const FVector &loc);
 
+	UFUNCTION(BlueprintCallable)
+	void MoveToLocationComplete(bool success);
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -29,7 +32,10 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	void MoveToLocation(FVector);
+	void MoveToLocation(FVector, TFunction<void(bool)> callback);
 
 	FString GuestID;
+
+private:
+	TFunction<void(bool)> _CurrentCallback;
 };

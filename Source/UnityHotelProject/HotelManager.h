@@ -46,5 +46,14 @@ public:
 
 	void AssignGuestToRoom(RoomInfo* ri);
 	
-	void CheckOutTime();
+	void CheckOutGuests();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void DestroyActorBP(const AActor* actor);
+
+private:
+	const int CheckoutTime = 11;
+
+	int _LastCheckoutDay = -1;
+	void HandleTimedEvents();
 };

@@ -27,6 +27,7 @@ void AHotelManager::Tick(float DeltaTime)
 	if (_TimeManager)
 	{
 		_TimeManager->Tick(DeltaTime);
+		HandleTimedEvents();
 	}
 }
 
@@ -50,12 +51,41 @@ void AHotelManager::AssignGuestToRoom(RoomInfo* ri)
 			ri->PersonRef = person;
 			ri->RoomStatus = ARoomManager::RoomStatus::OCCUPIED;
 
-			person->MoveToLocation(ri->RoomRef->GetActorLocation());
+			person->MoveToLocation(ri->RoomRef->GetActorLocation(), [this](bool success)
+				{
+					UE_LOG(LogTemp, Warning, TEXT("Move done - %s"), (success ? TEXT("true") : TEXT("false")));
+				});
 		}
 	}
 }
 
-void AHotelManager::CheckOutTime()
+void AHotelManager::CheckOutGuests()
 {
+	TArray<APerson*> guests = RoomManger->GetGuestInRooms();
+	for (APerson* person : guests)
+	{
+		FString guestID = person->GuestID;
+		person->MoveToLocation(PeopleManger->GetActorLocation(), [this,guestID](bool success)
+			{
+				//For now, just delete them
+				//Need to clean up room data
+				RoomManger->CheckOutGuest(guestID);
+				//Need to clean up people data
+				PeopleManger->RemoveGuest(guestID);
+			});
+	}
+}
+
+void AHotelManager::HandleTimedEvents()
+{
+	float time = _TimeManager->GetActualTime();
+	int day = _TimeManager->GetDay();
+
+	//Checkout
+	if (_LastCheckoutDay != day && (int)time == CheckoutTime)
+	{
+		_LastCheckoutDay = day;
+		CheckOutGuests();
+	}
 }
 

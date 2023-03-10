@@ -18,6 +18,9 @@ public:
 
 	FString GetTimeInStandardFormat();
 
+	float GetActualTime();
+	int GetDay();
+
 	//void RegisterEventAtTime(TFunction<void> func, int hour, int minute);
 private:
 	const float DayTimeMinutes = .5f;
@@ -29,17 +32,19 @@ private:
 	const float MaxDay = 360;
 	const float MinNight = 0;
 	const float MaxNight = 180;
-	const int CheckoutTime = 11;
 
 	float _TimeSeconds;
 	float _DayTimeSeconds;
 	float _NightTimeSeconds;
+	float _ActualTime;
+
+	int _DayCount = 0;
 
 	ADirectionalLight* SunLight;
 
 	void SetSunRotation();
 
+	void UpdateActualTime(float time);
+		
 	AHotelManager* _HotelManagerRef;
-
-	//TMap<FString, void*> TimeToEventMap;
 };
