@@ -13,31 +13,39 @@ UCLASS()
 class UNITYHOTELPROJECT_API APeopleManager : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
-	// Sets default values for this actor's properties
-	APeopleManager();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere)
-	class UStaticMeshComponent* Floor;
+	class UStaticMeshComponent* Floor_Entrance;
 
 	UPROPERTY(VisibleAnywhere)
-	class USceneComponent* SpawnPoint;
+	class UStaticMeshComponent* Floor_Exit;
 
-public:	
+	UPROPERTY(VisibleAnywhere)
+	class USceneComponent* EntrancePoint;
+
+	UPROPERTY(VisibleAnywhere)
+	class USceneComponent* ExitPoint;
+
+public:
+	// Sets default values for this actor's properties
+	APeopleManager();
+
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<APerson> Person1Character;
 
-	APerson* GetWaitingPerson(APerson*& person);
+	bool GetWaitingPerson(APerson*& person);
 
 	bool RemoveGuest(FString guestID);
+
+	FVector GetEntrance();
+	FVector GetExit();
 
 private:
 	void CreatePerson();
@@ -46,8 +54,8 @@ private:
 
 	TQueue<APerson*> GuestWaiting;
 
-	const float MIN_NEXT_PERSON_TIME = 50.0f;
-	const float MAX_NEXT_PERSON_TIME = 200.0f;
+	const float MIN_NEXT_PERSON_TIME = 5.0f;
+	const float MAX_NEXT_PERSON_TIME = 20.0f;
 	float _NextCreationTime;
 	float _CurrentTick;
 };

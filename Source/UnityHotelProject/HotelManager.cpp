@@ -11,12 +11,19 @@ AHotelManager::AHotelManager()
 	
 }
 
+AHotelManager::~AHotelManager()
+{
+	delete _TimeManager;
+	delete _FinanceManager;
+}
+
 // Called when the game starts or when spawned
 void AHotelManager::BeginPlay()
 {
 	Super::BeginPlay();
 	RoomManger->HotelManager = HotelManagerBP;
 	_TimeManager = new TimeManager(SunLight, HotelManagerBP);
+	_FinanceManager = new FinanceManager();
 }
 
 // Called every frame
@@ -40,21 +47,32 @@ FString AHotelManager::GetTimeString()
 	return FString("Error");
 }
 
+FString AHotelManager::GetMoneyString()
+{
+	if (_FinanceManager)
+	{
+		return FString::FromInt(_FinanceManager->GetMoney());
+	}
+	return FString("Error");
+}
+
 void AHotelManager::AssignGuestToRoom(RoomInfo* ri)
 {
 	if (ri)
 	{
 		APerson* person;
-		PeopleManger->GetWaitingPerson(person);
-		if (person)
+		if (PeopleManger->GetWaitingPerson(person))
 		{
-			ri->PersonRef = person;
-			ri->RoomStatus = ARoomManager::RoomStatus::OCCUPIED;
+			if (person)
+			{
+				ri->PersonRef = person;
+				ri->RoomStatus = ARoomManager::RoomStatus::OCCUPIED;
 
-			person->MoveToLocation(ri->RoomRef->GetActorLocation(), [this](bool success)
-				{
-					UE_LOG(LogTemp, Warning, TEXT("Move done - %s"), (success ? TEXT("true") : TEXT("false")));
-				});
+				person->MoveToLocation(ri->RoomRef->GetActorLocation(), [this](bool success)
+					{
+						UE_LOG(LogTemp, Warning, TEXT("Move done - %s"), (success ? TEXT("true") : TEXT("false")));
+					});
+			}
 		}
 	}
 }
@@ -64,15 +82,22 @@ void AHotelManager::CheckOutGuests()
 	TArray<APerson*> guests = RoomManger->GetGuestInRooms();
 	for (APerson* person : guests)
 	{
-		FString guestID = person->GuestID;
-		person->MoveToLocation(PeopleManger->GetActorLocation(), [this,guestID](bool success)
-			{
-				//For now, just delete them
-				//Need to clean up room data
-				RoomManger->CheckOutGuest(guestID);
-				//Need to clean up people data
-				PeopleManger->RemoveGuest(guestID);
-			});
+		person->DecrementNightsLeft();
+		//Only check out guest who are done
+		if (person->GetNightsLeft() == 0)
+		{
+			FString guestID = person->GetID();
+			person->MoveToLocation(PeopleManger->GetExit(), [this, guestID](bool success)
+				{
+					//For now, just delete them
+					//Need to clean up room data
+					RoomManger->CheckOutGuest(guestID);
+			//Need to clean up people data
+			PeopleManger->RemoveGuest(guestID);
+
+			_FinanceManager->FinancialTransaction(FinanceManager::TransactionType::NIGHT, true);
+				});
+		}
 	}
 }
 

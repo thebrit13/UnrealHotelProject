@@ -13,5 +13,6 @@ UCLASS()
 class UNITYHOTELPROJECT_API ACameraPlayerController : public APlayerController
 {
 	GENERATED_BODY()
-	
+//public:
+//	virtual void BeginPlay() override;
 };

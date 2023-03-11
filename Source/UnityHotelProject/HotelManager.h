@@ -8,27 +8,18 @@
 #include "PeopleManager.h"
 #include "Engine/DirectionalLight.h"
 #include "TimeManager.h"
+#include "FinanceManager.h"
 #include "HotelManager.generated.h"
 
 UCLASS()
 class UNITYHOTELPROJECT_API AHotelManager : public AActor
 {
 	GENERATED_BODY()
-	
+
 public:	
 	// Sets default values for this actor's properties
 	AHotelManager();
-
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-	UPROPERTY(EditInstanceOnly)
-	AHotelManager* HotelManagerBP;
-
-	TimeManager* _TimeManager;
-
-public:	
+	~AHotelManager();
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -42,18 +33,32 @@ public:
 	ADirectionalLight* SunLight;
 
 	UFUNCTION(BlueprintCallable)
-	FString GetTimeString();
+	FString GetTimeString();	
+	
+	UFUNCTION(BlueprintCallable)
+	FString GetMoneyString();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void DestroyActorBP(const AActor* actor);
 
 	void AssignGuestToRoom(RoomInfo* ri);
 	
 	void CheckOutGuests();
 
-	UFUNCTION(BlueprintImplementableEvent)
-	void DestroyActorBP(const AActor* actor);
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
+	UPROPERTY(EditInstanceOnly)
+	AHotelManager* HotelManagerBP;
+
 
 private:
 	const int CheckoutTime = 11;
 
 	int _LastCheckoutDay = -1;
 	void HandleTimedEvents();
+
+	TimeManager* _TimeManager;
+	FinanceManager* _FinanceManager;
 };

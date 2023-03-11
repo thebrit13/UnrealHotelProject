@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "Person.h"
+#include "PersonData.h"
 
 // Sets default values
 APerson::APerson()
@@ -11,11 +11,15 @@ APerson::APerson()
 
 }
 
+APerson::~APerson()
+{
+	delete _PersonData;
+}
+
 // Called when the game starts or when spawned
 void APerson::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 void APerson::MoveToLocationComplete(bool success)
@@ -34,6 +38,25 @@ void APerson::Tick(float DeltaTime)
 
 }
 
+void APerson::Setup(PersonType personType,FString personID)
+{
+	switch (personType)
+	{
+		case APerson::GUEST:
+			_GuestData = new GuestData(FMath::RandRange(1,3), personID);
+			break;
+		case APerson::EMPLOYEE:
+			_PersonData = new PersonData(personID);
+			break;
+		case APerson::OTHER:
+			_PersonData = new PersonData(personID);
+			break;
+		default:
+			_PersonData = new PersonData(personID);
+			break;
+	}
+}
+
 // Called to bind functionality to input
 void APerson::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
@@ -45,6 +68,11 @@ void APerson::MoveToLocation(FVector loc, TFunction<void(bool)> callback)
 {
 	_CurrentCallback = callback;
 	MoveToLocationBP(loc);
+}
+
+void APerson::DecrementNightsLeft()
+{
+	_GuestData->NightsLeft--;
 }
 
 

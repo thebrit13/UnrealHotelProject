@@ -4,16 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "GuestData.h"
 #include "Person.generated.h"
 
 UCLASS()
 class UNITYHOTELPROJECT_API APerson : public ACharacter
 {
 	GENERATED_BODY()
-
-public:
-	// Sets default values for this character's properties
-	APerson();
 
 protected:
 	// Called when the game starts or when spawned
@@ -26,16 +23,37 @@ protected:
 	void MoveToLocationComplete(bool success);
 
 public:	
+
+	enum PersonType
+	{
+		GUEST,
+		EMPLOYEE,
+		OTHER
+	};
+
+	// Sets default values for this character's properties
+	APerson();
+	~APerson();
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	void Setup(PersonType personType,FString personID);
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	void MoveToLocation(FVector, TFunction<void(bool)> callback);
 
-	FString GuestID;
+	FString GetID() { return _GuestData ? _GuestData->ID : _PersonData->ID; };
+
+	int GetNightsLeft() { return _GuestData ? _GuestData->NightsLeft : 0; };
+
+	void DecrementNightsLeft();
 
 private:
 	TFunction<void(bool)> _CurrentCallback;
+	GuestData* _GuestData;
+	class PersonData* _PersonData;
+
+
 };

@@ -49,6 +49,7 @@ void ARoomManager::AssignRoomClickedBP()
 void ARoomManager::CleanRoomClickedBP()
 {
 	UE_LOG(LogTemp, Warning, TEXT("CLEAN"));
+	LastRoomClicked->RoomStatus = RoomStatus::READY;
 }
 
 TArray<APerson*> ARoomManager::GetGuestInRooms()
@@ -68,9 +69,9 @@ bool ARoomManager::CheckOutGuest(FString guestID)
 {
 	for (RoomInfo* ri : RoomInfoList)
 	{
-		if (ri->PersonRef && ri->PersonRef->GuestID == guestID)
+		if (ri->PersonRef && ri->PersonRef->GetID() == guestID)
 		{
-			ri->RoomRef = nullptr;
+			ri->PersonRef = nullptr;
 			ri->RoomStatus = RoomStatus::DIRTY;
 			return true;
 		}

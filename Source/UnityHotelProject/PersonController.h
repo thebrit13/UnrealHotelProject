@@ -13,5 +13,4 @@ UCLASS()
 class UNITYHOTELPROJECT_API APersonController : public AAIController
 {
 	GENERATED_BODY()
-	
 };
