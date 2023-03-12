@@ -25,14 +25,25 @@ protected:
 	class UStaticMeshComponent* Floor_Exit;
 
 	UPROPERTY(VisibleAnywhere)
+	class UStaticMeshComponent* Employee_Entrance;
+
+	UPROPERTY(VisibleAnywhere)
 	class USceneComponent* EntrancePoint;
 
 	UPROPERTY(VisibleAnywhere)
 	class USceneComponent* ExitPoint;
 
+	UPROPERTY(VisibleAnywhere)
+	class USceneComponent* EmployeePoint;
+
 public:
 	// Sets default values for this actor's properties
 	APeopleManager();
+
+	enum EmployeeType
+	{
+		HOUSEKEEP
+	};
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -48,9 +59,13 @@ public:
 	FVector GetExit();
 
 private:
-	void CreatePerson();
+	APerson* CreatePerson(FVector loc, APerson::PersonType pt);
+	void CreateGuest();
+	void CreateEmployee(EmployeeType et);
 
 	TArray<APerson*> GuestList;
+
+	TArray<APerson*> AllCreatedPeople;
 
 	TQueue<APerson*> GuestWaiting;
 

@@ -45,6 +45,8 @@ public:
 	
 	void CheckOutGuests();
 
+	void FinancialTransactionHelper(FinanceManager::TransactionType tt, bool add);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

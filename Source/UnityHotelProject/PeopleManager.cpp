@@ -19,6 +19,11 @@ APeopleManager::APeopleManager()
 	Floor_Exit->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	ExitPoint = CreateDefaultSubobject<USceneComponent>(TEXT("ExitPoint"));
 	ExitPoint->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+
+	Employee_Entrance = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Employee_Entrance"));
+	Employee_Entrance->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	EmployeePoint = CreateDefaultSubobject<USceneComponent>(TEXT("EmployeePoint"));
+	EmployeePoint->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 // Called when the game starts or when spawned
@@ -26,8 +31,8 @@ void APeopleManager::BeginPlay()
 {
 	Super::BeginPlay();
 
-	CreatePerson();
-	
+	CreateGuest();
+	CreateEmployee(EmployeeType::HOUSEKEEP);
 }
 
 // Called every frame
@@ -38,7 +43,7 @@ void APeopleManager::Tick(float DeltaTime)
 	_CurrentTick += DeltaTime;
 	if (_CurrentTick >= _NextCreationTime)
 	{
-		CreatePerson();
+		CreateGuest();
 		_CurrentTick = 0;
 	}
 }
@@ -72,14 +77,26 @@ FVector APeopleManager::GetExit()
 	return ExitPoint->GetComponentLocation();
 }
 
-void APeopleManager::CreatePerson()
+APerson* APeopleManager::CreatePerson(FVector loc,APerson::PersonType pt)
 {
-	APerson* createdPerson = GetWorld()->SpawnActor<APerson>(Person1Character, EntrancePoint->GetComponentLocation(), FRotator(0,180,0));
-	createdPerson->Setup(APerson::PersonType::GUEST, FString::FromInt(GuestList.Num() + 1));
+	APerson* createdPerson = GetWorld()->SpawnActor<APerson>(Person1Character, loc, FRotator(0, 180, 0));
+	createdPerson->Setup(pt, FString::FromInt(AllCreatedPeople.Num() + 1));
+	AllCreatedPeople.Add(createdPerson);
+	return createdPerson;
+}
 
-	GuestList.Add(createdPerson);
-	GuestWaiting.Enqueue(createdPerson);
+void APeopleManager::CreateGuest()
+{
+	APerson* person = CreatePerson(EntrancePoint->GetComponentLocation(), APerson::PersonType::GUEST);
+
+	GuestList.Add(person);
+	GuestWaiting.Enqueue(person);
 
 	_NextCreationTime = FMath::RandRange(MIN_NEXT_PERSON_TIME, MAX_NEXT_PERSON_TIME);
+}
+
+void APeopleManager::CreateEmployee(EmployeeType et)
+{
+	CreatePerson(EmployeePoint->GetComponentLocation(), APerson::PersonType::EMPLOYEE);
 }
 

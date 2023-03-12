@@ -101,6 +101,14 @@ void AHotelManager::CheckOutGuests()
 	}
 }
 
+void AHotelManager::FinancialTransactionHelper(FinanceManager::TransactionType tt, bool add)
+{
+	if (_FinanceManager)
+	{
+		_FinanceManager->FinancialTransaction(tt, add);
+	}
+}
+
 void AHotelManager::HandleTimedEvents()
 {
 	float time = _TimeManager->GetActualTime();
