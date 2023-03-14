@@ -10,7 +10,7 @@
 #include "PeopleManager.generated.h"
 
 UCLASS()
-class UNITYHOTELPROJECT_API APeopleManager : public AActor
+class UNREALHOTELPROJECT_API APeopleManager : public AActor
 {
 	GENERATED_BODY()
 

@@ -12,7 +12,7 @@
 #include "HotelManager.generated.h"
 
 UCLASS()
-class UNITYHOTELPROJECT_API AHotelManager : public AActor
+class UNREALHOTELPROJECT_API AHotelManager : public AActor
 {
 	GENERATED_BODY()
 

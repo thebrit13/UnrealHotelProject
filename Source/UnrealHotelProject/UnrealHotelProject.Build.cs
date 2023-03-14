@@ -2,9 +2,9 @@
 
 using UnrealBuildTool;
 
-public class UnityHotelProject : ModuleRules
+public class UnrealHotelProject : ModuleRules
 {
-	public UnityHotelProject(ReadOnlyTargetRules Target) : base(Target)
+	public UnrealHotelProject(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	

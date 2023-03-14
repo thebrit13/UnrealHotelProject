@@ -7,7 +7,7 @@
 #include "RoomActor.generated.h"
 
 UCLASS()
-class UNITYHOTELPROJECT_API ARoomActor : public AActor
+class UNREALHOTELPROJECT_API ARoomActor : public AActor
 {
 	GENERATED_BODY()
 	

@@ -10,7 +10,7 @@
  * 
  */
 UCLASS()
-class UNITYHOTELPROJECT_API ACameraPlayerController : public APlayerController
+class UNREALHOTELPROJECT_API ACameraPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 //public:

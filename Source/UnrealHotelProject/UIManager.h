@@ -8,7 +8,7 @@
 #include "UIManager.generated.h"
 
 UCLASS()
-class UNITYHOTELPROJECT_API AUIManager : public AActor
+class UNREALHOTELPROJECT_API AUIManager : public AActor
 {
 	GENERATED_BODY()
 	

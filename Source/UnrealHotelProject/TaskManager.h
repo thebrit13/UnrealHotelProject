@@ -9,7 +9,7 @@
 /**
  * 
  */
-class UNITYHOTELPROJECT_API TaskManager
+class UNREALHOTELPROJECT_API TaskManager
 {
 public:
 	TaskManager(ARoomManager* roomManager);

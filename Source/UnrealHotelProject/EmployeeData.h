@@ -9,7 +9,7 @@
 /**
  * 
  */
-class UNITYHOTELPROJECT_API EmployeeData : public PersonData
+class UNREALHOTELPROJECT_API EmployeeData : public PersonData
 {
 public:
 	EmployeeData(FString ID,APeopleManager::EmployeeType et);

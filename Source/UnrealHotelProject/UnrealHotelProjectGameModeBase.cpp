@@ -1,10 +1,10 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-#include "UnityHotelProjectGameModeBase.h"
-#include "UnityHotelProject.h"
+#include "UnrealHotelProjectGameModeBase.h"
+#include "UnrealHotelProject.h"
 
 
-UUserWidget* AUnityHotelProjectGameModeBase::ChangeWidget(TSubclassOf<UUserWidget> NewWidgetClass)
+UUserWidget* AUnrealHotelProjectGameModeBase::ChangeWidget(TSubclassOf<UUserWidget> NewWidgetClass)
 {
     if (CurrentWidget != nullptr && !CurrentWidget->IsA(MainHUD))
     {
@@ -22,7 +22,7 @@ UUserWidget* AUnityHotelProjectGameModeBase::ChangeWidget(TSubclassOf<UUserWidge
     return CurrentWidget;
 }
 
-void AUnityHotelProjectGameModeBase::BeginPlay()
+void AUnrealHotelProjectGameModeBase::BeginPlay()
 {
     Super::BeginPlay();
     //ChangeMenuWidget(RoomUI);

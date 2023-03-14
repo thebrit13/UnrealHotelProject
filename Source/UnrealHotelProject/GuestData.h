@@ -8,7 +8,7 @@
 /**
  * 
  */
-class UNITYHOTELPROJECT_API GuestData: public PersonData
+class UNREALHOTELPROJECT_API GuestData: public PersonData
 {
 public:
 	GuestData(int nights, FString ID);

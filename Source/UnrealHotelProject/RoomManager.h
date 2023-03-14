@@ -11,7 +11,7 @@
 class AHotelManager;
 
 UCLASS()
-class UNITYHOTELPROJECT_API ARoomManager : public AActor
+class UNREALHOTELPROJECT_API ARoomManager : public AActor
 {
 	GENERATED_BODY()
 	

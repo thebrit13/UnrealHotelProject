@@ -10,7 +10,7 @@
  * 
  */
 UCLASS()
-class UNITYHOTELPROJECT_API APersonController : public AAIController
+class UNREALHOTELPROJECT_API APersonController : public AAIController
 {
 	GENERATED_BODY()
 };

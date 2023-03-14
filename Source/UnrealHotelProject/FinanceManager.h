@@ -7,7 +7,7 @@
 /**
  * 
  */
-class UNITYHOTELPROJECT_API FinanceManager
+class UNREALHOTELPROJECT_API FinanceManager
 {
 public:
 	enum TransactionType

@@ -3,12 +3,12 @@
 using UnrealBuildTool;
 using System.Collections.Generic;
 
-public class UnityHotelProjectTarget : TargetRules
+public class UnrealHotelProjectTarget : TargetRules
 {
-	public UnityHotelProjectTarget( TargetInfo Target) : base(Target)
+	public UnrealHotelProjectTarget( TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Game;
 		DefaultBuildSettings = BuildSettingsVersion.V2;
-		ExtraModuleNames.AddRange( new string[] { "UnityHotelProject" } );
+		ExtraModuleNames.AddRange( new string[] { "UnrealHotelProject" } );
 	}
 }

@@ -7,7 +7,7 @@
 /**
  * 
  */
-class UNITYHOTELPROJECT_API PersonData
+class UNREALHOTELPROJECT_API PersonData
 {
 public:
 	PersonData(FString ID);

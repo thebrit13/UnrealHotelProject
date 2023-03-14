@@ -7,7 +7,7 @@
 #include "CameraPawn.generated.h"
 
 UCLASS()
-class UNITYHOTELPROJECT_API ACameraPawn : public APawn
+class UNREALHOTELPROJECT_API ACameraPawn : public APawn
 {
 	GENERATED_BODY()
 

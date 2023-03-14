@@ -8,7 +8,7 @@
 #include "Person.generated.h"
 
 UCLASS()
-class UNITYHOTELPROJECT_API APerson : public ACharacter
+class UNREALHOTELPROJECT_API APerson : public ACharacter
 {
 	GENERATED_BODY()
 

@@ -8,7 +8,7 @@
 /**
  * 
  */
-class UNITYHOTELPROJECT_API TimeManager
+class UNREALHOTELPROJECT_API TimeManager
 {
 public:
 	TimeManager(ADirectionalLight* sunLight,class AHotelManager* hotelManager);

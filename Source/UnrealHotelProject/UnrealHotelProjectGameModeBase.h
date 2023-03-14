@@ -5,13 +5,13 @@
 #include "Blueprint/UserWidget.h"
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
-#include "UnityHotelProjectGameModeBase.generated.h"
+#include "UnrealHotelProjectGameModeBase.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class UNITYHOTELPROJECT_API AUnityHotelProjectGameModeBase : public AGameModeBase
+class UNREALHOTELPROJECT_API AUnrealHotelProjectGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 public:
