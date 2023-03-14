@@ -77,6 +77,25 @@ void AHotelManager::AssignGuestToRoom(RoomInfo* ri)
 	}
 }
 
+void AHotelManager::AssignHousekeeperToRoom(RoomInfo* ri)
+{
+	if (ri)
+	{
+		APerson* employee = PeopleManger->GetAvailableHousekeeper();
+		if(employee)	
+		{
+			employee->MoveToLocation(ri->RoomRef->GetActorLocation(), [this,ri,employee](bool success)
+				{
+					UE_LOG(LogTemp, Warning, TEXT("Move done - %s"), (success ? TEXT("true") : TEXT("false")));
+					FinancialTransactionHelper(FinanceManager::TransactionType::CLEAN, false);
+					//LastRoomClicked->RoomStatus = RoomStatus::READY;
+					ri->RoomStatus = ARoomManager::RoomStatus::READY;
+					PeopleManger->ReturnHousekeeper(employee);
+				});
+		}
+	}
+}
+
 void AHotelManager::CheckOutGuests()
 {
 	TArray<APerson*> guests = RoomManger->GetGuestInRooms();

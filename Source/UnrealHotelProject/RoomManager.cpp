@@ -49,8 +49,7 @@ void ARoomManager::AssignRoomClickedBP()
 void ARoomManager::CleanRoomClickedBP()
 {
 	UE_LOG(LogTemp, Warning, TEXT("CLEAN"));
-	HotelManager->FinancialTransactionHelper(FinanceManager::TransactionType::CLEAN,false);
-	LastRoomClicked->RoomStatus = RoomStatus::READY;
+	HotelManager->AssignHousekeeperToRoom(LastRoomClicked);
 }
 
 TArray<APerson*> ARoomManager::GetGuestInRooms()

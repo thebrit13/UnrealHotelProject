@@ -53,10 +53,14 @@ public:
 
 	bool GetWaitingPerson(APerson*& person);
 
+	APerson* GetAvailableHousekeeper();
+
 	bool RemoveGuest(FString guestID);
 
 	FVector GetEntrance();
 	FVector GetExit();
+
+	void ReturnHousekeeper(APerson* person);
 
 private:
 	APerson* CreatePerson(FVector loc, APerson::PersonType pt);
@@ -66,6 +70,8 @@ private:
 	TArray<APerson*> GuestList;
 
 	TArray<APerson*> AllCreatedPeople;
+
+	TArray<APerson*> EmployeeList;
 
 	TQueue<APerson*> GuestWaiting;
 

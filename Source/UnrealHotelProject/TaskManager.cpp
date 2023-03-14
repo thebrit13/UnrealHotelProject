@@ -2,42 +2,41 @@
 
 
 #include "TaskManager.h"
+#include "Person.h"
 
-TaskManager::TaskManager(ARoomManager* roomManager)
+TaskManager::TaskManager(APerson* person)
 {
-	_RoomManager = roomManager;
+	_Person = person;
 }
 
 TaskManager::~TaskManager()
 {
 }
 
-void TaskManager::AddPerson(APerson* person)
-{
-	PersonTaskObject* taskObject = new PersonTaskObject();
-	taskObject->Person = person;
-
-	_PersonTaskList.Add(taskObject);
-}
-
 void TaskManager::Tick(float deltaTime)
 {
-	currentTime += deltaTime;
-	if (currentTime >= TASK_UPDATE_TIME)
+	_CurrentCount += deltaTime;
+	if (_CurrentCount >= TASK_UPDATE_TIME)
 	{
-		currentTime = 0;
+		_CurrentCount = 0;
 		UpdateTasks();
 	}
 }
 
+void TaskManager::AddTask(TaskType tt,float taskTime)
+{
+
+}
+
+void TaskManager::AddTask(TaskType tt, TFunction<void(bool)> callback)
+{
+}
+
+void TaskManager::AddTask(TaskType tt, float taskTime, TFunction<void(bool)> callback)
+{
+}
+
 void TaskManager::UpdateTasks()
 {
-	for (int i = 0; i < _PersonTaskList.Num(); i++)
-	{
-		if (_PersonTaskList[i]->CurrentState == PersonState::IDLE)
-		{
-			//_PersonTaskList[i]->Person->MoveToLocation(_RoomManager->RoomList[0]->GetActorLocation());
-			//_PersonTaskList[i]->CurrentState = PersonState::WALKING;
-		}
-	}
 }
+

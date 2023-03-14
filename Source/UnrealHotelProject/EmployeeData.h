@@ -15,6 +15,8 @@ public:
 	EmployeeData(FString ID,APeopleManager::EmployeeType et);
 	~EmployeeData();
 
+	APeopleManager::EmployeeType GetEmployeeType() { return _EmployeeType; };
+
 private:
 	APeopleManager::EmployeeType _EmployeeType;
 };

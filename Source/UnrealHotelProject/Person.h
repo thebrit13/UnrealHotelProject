@@ -50,10 +50,17 @@ public:
 
 	void DecrementNightsLeft();
 
+	class EmployeeData* GetEmployeeData() { return _EmployeeData; };
+
+	class TaskManager* GetTaskManager() { return _TaskManager; };
+
 private:
 	TFunction<void(bool)> _CurrentCallback;
 	GuestData* _GuestData;
 	class PersonData* _PersonData;
+	class EmployeeData* _EmployeeData;
+
+	class TaskManager* _TaskManager;
 
 
 };

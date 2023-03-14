@@ -38,10 +38,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	FString GetMoneyString();
 
-	UFUNCTION(BlueprintImplementableEvent)
-	void DestroyActorBP(const AActor* actor);
+	//UFUNCTION(BlueprintImplementableEvent)
+	//void DestroyActorBP(const AActor* actor);
 
 	void AssignGuestToRoom(RoomInfo* ri);
+
+	void AssignHousekeeperToRoom(RoomInfo* ri);
 	
 	void CheckOutGuests();
 

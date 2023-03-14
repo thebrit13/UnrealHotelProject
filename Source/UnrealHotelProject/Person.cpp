@@ -2,6 +2,8 @@
 
 #include "Person.h"
 #include "PersonData.h"
+#include "EmployeeData.h"
+#include "TaskManager.h"
 
 // Sets default values
 APerson::APerson()
@@ -14,12 +16,17 @@ APerson::APerson()
 APerson::~APerson()
 {
 	delete _PersonData;
+	delete _GuestData;
+	delete _EmployeeData;
+	delete _TaskManager;
 }
 
 // Called when the game starts or when spawned
 void APerson::BeginPlay()
 {
 	Super::BeginPlay();
+
+	_TaskManager = new TaskManager(this);
 }
 
 void APerson::MoveToLocationComplete(bool success)
@@ -36,6 +43,10 @@ void APerson::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (_TaskManager)
+	{
+		_TaskManager->Tick(DeltaTime);
+	}
 }
 
 void APerson::Setup(PersonType personType,FString personID)
@@ -46,7 +57,7 @@ void APerson::Setup(PersonType personType,FString personID)
 			_GuestData = new GuestData(FMath::RandRange(1,3), personID);
 			break;
 		case APerson::EMPLOYEE:
-			_PersonData = new PersonData(personID);
+			_EmployeeData = new EmployeeData(personID,APeopleManager::EmployeeType::HOUSEKEEP);
 			break;
 		case APerson::OTHER:
 			_PersonData = new PersonData(personID);
@@ -74,5 +85,6 @@ void APerson::DecrementNightsLeft()
 {
 	_GuestData->NightsLeft--;
 }
+
 
 

@@ -2,8 +2,7 @@
 
 #pragma once
 
-#include "Person.h"
-#include "RoomManager.h"
+
 #include "CoreMinimal.h"
 
 /**
@@ -12,37 +11,36 @@
 class UNREALHOTELPROJECT_API TaskManager
 {
 public:
-	TaskManager(ARoomManager* roomManager);
-	~TaskManager();
-
-	enum PersonState
+	enum TaskType
 	{
-		IDLE,
-		WALKING
+		GO_TO,
+		CLEAN
 	};
 
-	void AddPerson(APerson* person);
+	TaskManager(class APerson* person);
+	~TaskManager();
 
 	void Tick(float deltaTime);
 
-private:
-	TArray<struct PersonTaskObject*> _PersonTaskList;
+	void AddTask(TaskType tt,float taskTime);
+	void AddTask(TaskType tt, TFunction<void(bool)> callback);
+	void AddTask(TaskType tt,float taskTime, TFunction<void(bool)> callback);
 
-	float currentTime = 0;
-	const float TASK_UPDATE_TIME = .5f;
+private:
+	APerson* _Person;
+
+	const float TASK_UPDATE_TIME = .25f;
+
+	float _CurrentCount;
 
 	void UpdateTasks();
 
-	UPROPERTY()
-	ARoomManager* _RoomManager;
-
+	TQueue<struct TaskObject*> TaskQueue;
 
 };
 
-struct PersonTaskObject
+struct TaskObject
 {
-	UPROPERTY()
-	APerson* Person;
-
-	TaskManager::PersonState CurrentState;
+	TaskManager::TaskType TaskType;
 };
+

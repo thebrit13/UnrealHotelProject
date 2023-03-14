@@ -2,6 +2,7 @@
 
 
 #include "PeopleManager.h"
+#include "EmployeeData.h"
 
 
 // Sets default values
@@ -53,6 +54,18 @@ bool APeopleManager::GetWaitingPerson(APerson* &person)
 	return GuestWaiting.Dequeue(person);
 }
 
+APerson* APeopleManager::GetAvailableHousekeeper()
+{
+	for (APerson* person : EmployeeList)
+	{
+		if (person->GetEmployeeData() && person->GetEmployeeData()->GetEmployeeType() == APeopleManager::EmployeeType::HOUSEKEEP)
+		{
+			return person;
+		}
+	}
+	return nullptr;
+}
+
 bool APeopleManager::RemoveGuest(FString guestID)
 {
 	for (int i = 0; i < GuestList.Num(); i++)
@@ -77,6 +90,11 @@ FVector APeopleManager::GetExit()
 	return ExitPoint->GetComponentLocation();
 }
 
+void APeopleManager::ReturnHousekeeper(APerson* person)
+{
+	person->MoveToLocation(EmployeePoint->GetComponentLocation(), nullptr);
+}
+
 APerson* APeopleManager::CreatePerson(FVector loc,APerson::PersonType pt)
 {
 	APerson* createdPerson = GetWorld()->SpawnActor<APerson>(Person1Character, loc, FRotator(0, 180, 0));
@@ -97,6 +115,7 @@ void APeopleManager::CreateGuest()
 
 void APeopleManager::CreateEmployee(EmployeeType et)
 {
-	CreatePerson(EmployeePoint->GetComponentLocation(), APerson::PersonType::EMPLOYEE);
+	APerson* person = CreatePerson(EmployeePoint->GetComponentLocation(), APerson::PersonType::EMPLOYEE);
+	EmployeeList.Add(person);
 }
 
