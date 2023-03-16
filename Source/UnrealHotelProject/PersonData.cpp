@@ -3,9 +3,9 @@
 
 #include "PersonData.h"
 
-PersonData::PersonData(FString ID)
+PersonData::PersonData(FString id)
 {
-	ID = ID;
+	ID = id;
 	Name = FString::Printf(TEXT("Name %s"), *ID);
 }
 

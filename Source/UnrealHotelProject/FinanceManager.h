@@ -23,6 +23,6 @@ public:
 	int GetMoney();
 private:
 	const int NIGHTLY_RATE = 100;
-	const int CLEANING_COST = 100;
+	const int CLEANING_COST = 10;
 	int Money = 0;
 };

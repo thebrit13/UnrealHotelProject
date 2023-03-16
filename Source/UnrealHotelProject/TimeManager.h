@@ -33,10 +33,10 @@ private:
 	const float MinNight = 0;
 	const float MaxNight = 180;
 
-	float _TimeSeconds;
-	float _DayTimeSeconds;
-	float _NightTimeSeconds;
-	float _ActualTime;
+	float _TimeSeconds = 0.0f;
+	float _DayTimeSeconds = 0.0f;
+	float _NightTimeSeconds = 0.0f;
+	float _ActualTime = 0.0f;
 
 	int _DayCount = 0;
 

@@ -56,6 +56,8 @@ public:
 
 	void RoomClicked(FString roomID);
 
+	int GetEmptyRoomCount();
+
 	AHotelManager* HotelManager;
 
 private:

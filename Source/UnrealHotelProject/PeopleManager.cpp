@@ -3,6 +3,7 @@
 
 #include "PeopleManager.h"
 #include "EmployeeData.h"
+#include "HotelManager.h"
 
 
 // Sets default values
@@ -32,7 +33,7 @@ void APeopleManager::BeginPlay()
 {
 	Super::BeginPlay();
 
-	CreateGuest();
+	//CreateGuest();
 	CreateEmployee(EmployeeType::HOUSEKEEP);
 }
 
@@ -51,6 +52,7 @@ void APeopleManager::Tick(float DeltaTime)
 
 bool APeopleManager::GetWaitingPerson(APerson* &person)
 {
+	_GuestWaitingCount--;
 	return GuestWaiting.Dequeue(person);
 }
 
@@ -93,7 +95,6 @@ FVector APeopleManager::GetExit()
 void APeopleManager::ReturnHousekeeper(APerson* person)
 {
 	person->AddTask(TaskManager::TaskType::GO_TO, -1, EmployeePoint->GetComponentLocation(), nullptr);
-	//person->MoveToLocation(EmployeePoint->GetComponentLocation(), nullptr);
 }
 
 APerson* APeopleManager::CreatePerson(FVector loc,APerson::PersonType pt)
@@ -106,12 +107,20 @@ APerson* APeopleManager::CreatePerson(FVector loc,APerson::PersonType pt)
 
 void APeopleManager::CreateGuest()
 {
+	if (!HotelManager->ShouldSpawnGuest())
+	{
+		return;
+	}
+
 	APerson* person = CreatePerson(EntrancePoint->GetComponentLocation(), APerson::PersonType::GUEST);
 
 	GuestList.Add(person);
 	GuestWaiting.Enqueue(person);
+	_GuestWaitingCount++;
 
 	_NextCreationTime = FMath::RandRange(MIN_NEXT_PERSON_TIME, MAX_NEXT_PERSON_TIME);
+
+	person->AddTask(TaskManager::TaskType::GO_TO, -1, HotelManager->GetCheckInLocation(), nullptr);
 }
 
 void APeopleManager::CreateEmployee(EmployeeType et)

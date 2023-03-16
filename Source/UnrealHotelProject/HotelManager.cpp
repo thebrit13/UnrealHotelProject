@@ -9,6 +9,10 @@ AHotelManager::AHotelManager()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	
+	CheckInDesk = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CheckInDesk"));
+	SetRootComponent(CheckInDesk);
+	GuestStandLocation = CreateDefaultSubobject<USceneComponent>(TEXT("GuestStandLocation"));
+	GuestStandLocation->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 AHotelManager::~AHotelManager()
@@ -21,7 +25,8 @@ AHotelManager::~AHotelManager()
 void AHotelManager::BeginPlay()
 {
 	Super::BeginPlay();
-	RoomManger->HotelManager = HotelManagerBP;
+	RoomManger->HotelManager = this;//HotelManagerBP;
+	PeopleManger->HotelManager = this;//HotelManagerBP;
 	_TimeManager = new TimeManager(SunLight, HotelManagerBP);
 	_FinanceManager = new FinanceManager();
 }
@@ -69,11 +74,6 @@ void AHotelManager::AssignGuestToRoom(RoomInfo* ri)
 				ri->RoomStatus = ARoomManager::RoomStatus::OCCUPIED;
 
 				person->AddTask(TaskManager::TaskType::GO_TO, -1, ri->RoomRef->GetActorLocation(), nullptr);
-
-				//person->MoveToLocation(ri->RoomRef->GetActorLocation(), [this](bool success)
-				//	{
-				//		UE_LOG(LogTemp, Warning, TEXT("Move done - %s"), (success ? TEXT("true") : TEXT("false")));
-				//	});
 			}
 		}
 	}
@@ -86,23 +86,13 @@ void AHotelManager::AssignHousekeeperToRoom(RoomInfo* ri)
 		APerson* employee = PeopleManger->GetAvailableHousekeeper();
 		if(employee)	
 		{
-			employee->AddTask(TaskManager::TaskType::GO_TO, -1, ri->RoomRef->GetActorLocation(), [this, ri, employee](bool success)
+			employee->AddTask(TaskManager::TaskType::GO_TO, -1, ri->RoomRef->GetActorLocation(), nullptr);
+			employee->AddTask(TaskManager::TaskType::CLEAN, 2.5f, FVector::ZeroVector, [this, ri, employee](bool success)
 				{
-					UE_LOG(LogTemp, Warning, TEXT("Move done - %s"), (success ? TEXT("true") : TEXT("false")));
 					FinancialTransactionHelper(FinanceManager::TransactionType::CLEAN, false);
-					//LastRoomClicked->RoomStatus = RoomStatus::READY;
 					ri->RoomStatus = ARoomManager::RoomStatus::READY;
-					PeopleManger->ReturnHousekeeper(employee);
 				});
-			
-				//employee->MoveToLocation(ri->RoomRef->GetActorLocation(), [this,ri,employee](bool success)
-				//{
-				//	UE_LOG(LogTemp, Warning, TEXT("Move done - %s"), (success ? TEXT("true") : TEXT("false")));
-				//	FinancialTransactionHelper(FinanceManager::TransactionType::CLEAN, false);
-				//	//LastRoomClicked->RoomStatus = RoomStatus::READY;
-				//	ri->RoomStatus = ARoomManager::RoomStatus::READY;
-				//	PeopleManger->ReturnHousekeeper(employee);
-				//});
+			employee->AddTask(TaskManager::TaskType::GO_TO, -1, PeopleManger->GetEmployeePoint(), nullptr);
 		}
 	}
 }
@@ -120,25 +110,10 @@ void AHotelManager::CheckOutGuests()
 			UE_LOG(LogTemp, Warning, TEXT("Check Out"));
 			person->AddTask(TaskManager::TaskType::GO_TO, -1, PeopleManger->GetExit(), [this, guestID](bool success)
 				{
-					//For now, just delete them
-					//Need to clean up room data
 					RoomManger->CheckOutGuest(guestID);
-					//Need to clean up people data
 					PeopleManger->RemoveGuest(guestID);
-
 					_FinanceManager->FinancialTransaction(FinanceManager::TransactionType::NIGHT, true);
 				});
-
-			//person->MoveToLocation(PeopleManger->GetExit(), [this, guestID](bool success)
-			//	{
-			//		//For now, just delete them
-			//		//Need to clean up room data
-			//		RoomManger->CheckOutGuest(guestID);
-			////Need to clean up people data
-			//PeopleManger->RemoveGuest(guestID);
-
-			//_FinanceManager->FinancialTransaction(FinanceManager::TransactionType::NIGHT, true);
-			//	});
 		}
 	}
 }
@@ -151,13 +126,24 @@ void AHotelManager::FinancialTransactionHelper(FinanceManager::TransactionType t
 	}
 }
 
+bool AHotelManager::ShouldSpawnGuest()
+{
+	int emptyRoomCount = RoomManger->GetEmptyRoomCount();
+	int guestWaiting = PeopleManger->GetWaitingGuestCount();
+
+	bool shouldSpawn = true;
+	shouldSpawn &= (int)_TimeManager->GetActualTime() >= CHECKIN_TIME;
+	shouldSpawn &= emptyRoomCount > guestWaiting;
+	return shouldSpawn;
+}
+
 void AHotelManager::HandleTimedEvents()
 {
 	float time = _TimeManager->GetActualTime();
 	int day = _TimeManager->GetDay();
 
 	//Checkout
-	if (_LastCheckoutDay != day && (int)time == CheckoutTime)
+	if (_LastCheckoutDay != day && (int)time == CHECKOUT_TIME)
 	{
 		_LastCheckoutDay = day;
 		CheckOutGuests();

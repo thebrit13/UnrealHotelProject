@@ -9,6 +9,8 @@
 #include "Engine/DirectionalLight.h"
 #include "TimeManager.h"
 #include "FinanceManager.h"
+#include "Components/StaticMeshComponent.h"
+#include "Components/SceneComponent.h"
 #include "HotelManager.generated.h"
 
 UCLASS()
@@ -23,11 +25,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UPROPERTY(EditInstanceOnly)
-	ARoomManager* RoomManger;	
-	
-	UPROPERTY(EditInstanceOnly)
-	APeopleManager* PeopleManger;
+
 
 	UPROPERTY(EditInstanceOnly)
 	ADirectionalLight* SunLight;
@@ -49,16 +47,33 @@ public:
 
 	void FinancialTransactionHelper(FinanceManager::TransactionType tt, bool add);
 
+	bool ShouldSpawnGuest();
+
+	FVector GetCheckInLocation() { return GuestStandLocation->GetComponentLocation(); };
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditInstanceOnly)
+	ARoomManager* RoomManger;
+
+	UPROPERTY(EditInstanceOnly)
+	APeopleManager* PeopleManger;
+
+	UPROPERTY(EditInstanceOnly)
 	AHotelManager* HotelManagerBP;
+
+	UPROPERTY(EditDefaultsOnly)
+	UStaticMeshComponent* CheckInDesk;
+
+	UPROPERTY(EditInstanceOnly)
+	USceneComponent* GuestStandLocation;
 
 
 private:
-	const int CheckoutTime = 11;
+	const int CHECKOUT_TIME = 11;
+	const int CHECKIN_TIME = 15;
 
 	int _LastCheckoutDay = -1;
 	void HandleTimedEvents();

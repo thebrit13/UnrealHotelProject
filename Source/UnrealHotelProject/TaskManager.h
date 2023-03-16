@@ -30,7 +30,7 @@ private:
 
 	const float TASK_UPDATE_TIME = .25f;
 
-	float _CurrentCount;
+	float _CurrentCount = 0;
 
 	void UpdateTasks();
 
@@ -46,7 +46,7 @@ struct TaskObject
 	TaskManager::TaskType TaskType;
 	TFunction<void(bool)> Callback;
 	float TotalTaskTime = -1;
-	float CurrentTaskTime;
+	float CurrentTaskTime = 0.0f;
 	FVector Destination;
 };
 

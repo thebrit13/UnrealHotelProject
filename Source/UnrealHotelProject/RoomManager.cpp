@@ -25,6 +25,7 @@ void ARoomManager::BeginPlay()
 		roomInfo->ID = actor->roomID;
 		roomInfo->RoomRef = actor;
 		roomInfo->RoomStatus = ARoomManager::RoomStatus::READY;
+		roomInfo->PersonRef = nullptr;
 
 		//Assign reference
 		actor->RoomManager = ARoomManagerBP;
@@ -89,6 +90,19 @@ void ARoomManager::RoomClicked(FString roomID)
 			LastRoomClicked = ri;
 		}
 	}
+}
+
+int ARoomManager::GetEmptyRoomCount()
+{
+	int emptyRoomCount = 0;
+	for (RoomInfo* ri : RoomInfoList)
+	{
+		if (!ri->PersonRef)
+		{
+			emptyRoomCount++;
+		}
+	}
+	return emptyRoomCount;
 }
 
 

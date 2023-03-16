@@ -9,6 +9,8 @@
 #include "Person.h"
 #include "PeopleManager.generated.h"
 
+class AHotelManager;
+
 UCLASS()
 class UNREALHOTELPROJECT_API APeopleManager : public AActor
 {
@@ -62,6 +64,12 @@ public:
 
 	void ReturnHousekeeper(APerson* person);
 
+	FVector GetEmployeePoint() { return EmployeePoint->GetComponentLocation(); };
+
+	AHotelManager* HotelManager;
+
+	int GetWaitingGuestCount() { return _GuestWaitingCount; };
+
 private:
 	APerson* CreatePerson(FVector loc, APerson::PersonType pt);
 	void CreateGuest();
@@ -75,8 +83,12 @@ private:
 
 	TQueue<APerson*> GuestWaiting;
 
-	const float MIN_NEXT_PERSON_TIME = 5.0f;
-	const float MAX_NEXT_PERSON_TIME = 20.0f;
+	int _GuestWaitingCount;
+
+	const float MIN_NEXT_PERSON_TIME = 2.0f;
+	const float MAX_NEXT_PERSON_TIME = 5.0f;
 	float _NextCreationTime;
 	float _CurrentTick;
+
+	
 };

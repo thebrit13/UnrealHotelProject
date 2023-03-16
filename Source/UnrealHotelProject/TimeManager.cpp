@@ -19,7 +19,6 @@ TimeManager::~TimeManager()
 
 void TimeManager::Tick(float deltaTime)
 {
-	
 	_TimeSeconds += deltaTime;
 	if (_TimeSeconds >= _DayTimeSeconds + _NightTimeSeconds)
 	{
