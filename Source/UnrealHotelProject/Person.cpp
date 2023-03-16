@@ -31,11 +31,7 @@ void APerson::BeginPlay()
 
 void APerson::MoveToLocationComplete(bool success)
 {
-	if (_CurrentCallback)
-	{
-		_CurrentCallback(success);
-		_CurrentCallback = nullptr;
-	}
+	IsMoving = false;
 }
 
 // Called every frame
@@ -75,15 +71,24 @@ void APerson::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
-void APerson::MoveToLocation(FVector loc, TFunction<void(bool)> callback)
+void APerson::MoveToLocation(FVector destination)
 {
-	_CurrentCallback = callback;
-	MoveToLocationBP(loc);
+	MoveToLocationBP(destination);
+	IsMoving = true;
+
 }
 
 void APerson::DecrementNightsLeft()
 {
 	_GuestData->NightsLeft--;
+}
+
+void APerson::AddTask(TaskManager::TaskType tt, float taskTime, FVector destination, TFunction<void(bool)> callback)
+{
+	if (_TaskManager)
+	{
+		_TaskManager->AddTask(tt, taskTime, destination, callback);
+	}
 }
 
 

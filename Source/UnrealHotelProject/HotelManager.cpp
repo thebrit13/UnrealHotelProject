@@ -68,10 +68,12 @@ void AHotelManager::AssignGuestToRoom(RoomInfo* ri)
 				ri->PersonRef = person;
 				ri->RoomStatus = ARoomManager::RoomStatus::OCCUPIED;
 
-				person->MoveToLocation(ri->RoomRef->GetActorLocation(), [this](bool success)
-					{
-						UE_LOG(LogTemp, Warning, TEXT("Move done - %s"), (success ? TEXT("true") : TEXT("false")));
-					});
+				person->AddTask(TaskManager::TaskType::GO_TO, -1, ri->RoomRef->GetActorLocation(), nullptr);
+
+				//person->MoveToLocation(ri->RoomRef->GetActorLocation(), [this](bool success)
+				//	{
+				//		UE_LOG(LogTemp, Warning, TEXT("Move done - %s"), (success ? TEXT("true") : TEXT("false")));
+				//	});
 			}
 		}
 	}
@@ -84,7 +86,7 @@ void AHotelManager::AssignHousekeeperToRoom(RoomInfo* ri)
 		APerson* employee = PeopleManger->GetAvailableHousekeeper();
 		if(employee)	
 		{
-			employee->MoveToLocation(ri->RoomRef->GetActorLocation(), [this,ri,employee](bool success)
+			employee->AddTask(TaskManager::TaskType::GO_TO, -1, ri->RoomRef->GetActorLocation(), [this, ri, employee](bool success)
 				{
 					UE_LOG(LogTemp, Warning, TEXT("Move done - %s"), (success ? TEXT("true") : TEXT("false")));
 					FinancialTransactionHelper(FinanceManager::TransactionType::CLEAN, false);
@@ -92,6 +94,15 @@ void AHotelManager::AssignHousekeeperToRoom(RoomInfo* ri)
 					ri->RoomStatus = ARoomManager::RoomStatus::READY;
 					PeopleManger->ReturnHousekeeper(employee);
 				});
+			
+				//employee->MoveToLocation(ri->RoomRef->GetActorLocation(), [this,ri,employee](bool success)
+				//{
+				//	UE_LOG(LogTemp, Warning, TEXT("Move done - %s"), (success ? TEXT("true") : TEXT("false")));
+				//	FinancialTransactionHelper(FinanceManager::TransactionType::CLEAN, false);
+				//	//LastRoomClicked->RoomStatus = RoomStatus::READY;
+				//	ri->RoomStatus = ARoomManager::RoomStatus::READY;
+				//	PeopleManger->ReturnHousekeeper(employee);
+				//});
 		}
 	}
 }
@@ -106,16 +117,28 @@ void AHotelManager::CheckOutGuests()
 		if (person->GetNightsLeft() == 0)
 		{
 			FString guestID = person->GetID();
-			person->MoveToLocation(PeopleManger->GetExit(), [this, guestID](bool success)
+			UE_LOG(LogTemp, Warning, TEXT("Check Out"));
+			person->AddTask(TaskManager::TaskType::GO_TO, -1, PeopleManger->GetExit(), [this, guestID](bool success)
 				{
 					//For now, just delete them
 					//Need to clean up room data
 					RoomManger->CheckOutGuest(guestID);
-			//Need to clean up people data
-			PeopleManger->RemoveGuest(guestID);
+					//Need to clean up people data
+					PeopleManger->RemoveGuest(guestID);
 
-			_FinanceManager->FinancialTransaction(FinanceManager::TransactionType::NIGHT, true);
+					_FinanceManager->FinancialTransaction(FinanceManager::TransactionType::NIGHT, true);
 				});
+
+			//person->MoveToLocation(PeopleManger->GetExit(), [this, guestID](bool success)
+			//	{
+			//		//For now, just delete them
+			//		//Need to clean up room data
+			//		RoomManger->CheckOutGuest(guestID);
+			////Need to clean up people data
+			//PeopleManger->RemoveGuest(guestID);
+
+			//_FinanceManager->FinancialTransaction(FinanceManager::TransactionType::NIGHT, true);
+			//	});
 		}
 	}
 }

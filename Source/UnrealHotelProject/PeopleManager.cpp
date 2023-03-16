@@ -92,7 +92,8 @@ FVector APeopleManager::GetExit()
 
 void APeopleManager::ReturnHousekeeper(APerson* person)
 {
-	person->MoveToLocation(EmployeePoint->GetComponentLocation(), nullptr);
+	person->AddTask(TaskManager::TaskType::GO_TO, -1, EmployeePoint->GetComponentLocation(), nullptr);
+	//person->MoveToLocation(EmployeePoint->GetComponentLocation(), nullptr);
 }
 
 APerson* APeopleManager::CreatePerson(FVector loc,APerson::PersonType pt)

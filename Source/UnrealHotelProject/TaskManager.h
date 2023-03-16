@@ -22,11 +22,10 @@ public:
 
 	void Tick(float deltaTime);
 
-	void AddTask(TaskType tt,float taskTime);
-	void AddTask(TaskType tt, TFunction<void(bool)> callback);
-	void AddTask(TaskType tt,float taskTime, TFunction<void(bool)> callback);
+	void AddTask(TaskType tt,float taskTime,FVector destination, TFunction<void(bool)> callback);
 
 private:
+	UPROPERTY()
 	APerson* _Person;
 
 	const float TASK_UPDATE_TIME = .25f;
@@ -35,12 +34,19 @@ private:
 
 	void UpdateTasks();
 
-	TQueue<struct TaskObject*> TaskQueue;
+	void GetNextTask();
+
+	TQueue<struct TaskObject*> _TaskQueue;
+	TaskObject* _CurrentTask = nullptr;
 
 };
 
 struct TaskObject
 {
 	TaskManager::TaskType TaskType;
+	TFunction<void(bool)> Callback;
+	float TotalTaskTime = -1;
+	float CurrentTaskTime;
+	FVector Destination;
 };
 

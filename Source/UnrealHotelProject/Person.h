@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "GuestData.h"
+#include "TaskManager.h"
 #include "Person.generated.h"
 
 UCLASS()
@@ -42,7 +43,7 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	void MoveToLocation(FVector, TFunction<void(bool)> callback);
+	void MoveToLocation(FVector destination);
 
 	FString GetID() { return _GuestData ? _GuestData->ID : _PersonData->ID; };
 
@@ -52,7 +53,11 @@ public:
 
 	class EmployeeData* GetEmployeeData() { return _EmployeeData; };
 
-	class TaskManager* GetTaskManager() { return _TaskManager; };
+	TaskManager* GetTaskManager() { return _TaskManager; };
+
+	void AddTask(TaskManager::TaskType tt, float taskTime, FVector destination, TFunction<void(bool)> callback);
+
+	bool IsMoving;
 
 private:
 	TFunction<void(bool)> _CurrentCallback;
