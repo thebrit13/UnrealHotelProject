@@ -25,6 +25,7 @@ void ARoomManager::BeginPlay()
 		roomInfo->ID = actor->roomID;
 		roomInfo->RoomRef = actor;
 		roomInfo->RoomStatus = ARoomManager::RoomStatus::READY;
+		roomInfo->RoomRef->SetStatus("READY");
 		roomInfo->PersonRef = nullptr;
 
 		//Assign reference
@@ -74,6 +75,7 @@ bool ARoomManager::CheckOutGuest(FString guestID)
 		{
 			ri->PersonRef = nullptr;
 			ri->RoomStatus = RoomStatus::DIRTY;
+			ri->RoomRef->SetStatus("DIRTY");
 			return true;
 		}
 	}

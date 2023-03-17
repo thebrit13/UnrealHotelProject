@@ -72,6 +72,7 @@ void AHotelManager::AssignGuestToRoom(RoomInfo* ri)
 			{
 				ri->PersonRef = person;
 				ri->RoomStatus = ARoomManager::RoomStatus::OCCUPIED;
+				ri->RoomRef->SetStatus("OCCUPIED");
 
 				person->AddTask(TaskManager::TaskType::GO_TO, -1, ri->RoomRef->GetActorLocation(), nullptr);
 			}
@@ -91,6 +92,7 @@ void AHotelManager::AssignHousekeeperToRoom(RoomInfo* ri)
 				{
 					FinancialTransactionHelper(FinanceManager::TransactionType::CLEAN, false);
 					ri->RoomStatus = ARoomManager::RoomStatus::READY;
+					ri->RoomRef->SetStatus("READY");
 				});
 			employee->AddTask(TaskManager::TaskType::GO_TO, -1, PeopleManger->GetEmployeePoint(), nullptr);
 		}

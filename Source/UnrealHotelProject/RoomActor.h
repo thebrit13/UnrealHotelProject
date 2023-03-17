@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Components/WidgetComponent.h"
+#include "Components/StaticMeshComponent.h"
 #include "RoomActor.generated.h"
 
 UCLASS()
@@ -19,6 +21,12 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UPROPERTY(EditDefaultsOnly)
+	UStaticMeshComponent* RoomMesh;
+
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
+	UWidgetComponent* StatusWidget;
+
 	UFUNCTION(BlueprintCallable)
 	void OnRoomClicked();
 
@@ -31,6 +39,9 @@ public:
 
 	UPROPERTY()
 	class ARoomManager* RoomManager;
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void SetStatus(const FString &statusString);
 
 
 };
