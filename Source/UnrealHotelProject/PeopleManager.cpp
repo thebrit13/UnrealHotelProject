@@ -14,6 +14,8 @@ APeopleManager::APeopleManager()
 
 	//Floor_Entrance = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Floor_Entrance"));
 	//SetRootComponent(Floor_Entrance);
+	SetRootComponent(CreateDefaultSubobject<USceneComponent>(TEXT("PeopleManagerParent")));
+
 	EntrancePoint = CreateDefaultSubobject<USceneComponent>(TEXT("EntrancePoint"));
 	EntrancePoint->AttachToComponent(RootComponent,FAttachmentTransformRules::KeepRelativeTransform);
 

@@ -39,6 +39,8 @@ void AHotelGenerator::GenerateHotel()
 	FVector currentSpawnPoint = FVector::ZeroVector;
 	int xMult = 1;
 	int yMult = 1;
+
+	FVector entrance, exit, employee;
 	
 	for (int i = 0; i < HotelDataAsset->HotelDataArray.Num();i++)
 	{
@@ -76,26 +78,33 @@ void AHotelGenerator::GenerateHotel()
 			//Tiles
 			if (id[0] == 'T')
 			{
-				TSubclassOf<AActor> actorToSpawn = GetActorForID(id, HotelObjectDataAsset->HotelTiles);
+				FString overrideID = id;
+				if (id == "T3E" || id == "T3X" || id == "T3S")
+				{
+					overrideID = "T3";
+				}
+
+				TSubclassOf<AActor> actorToSpawn = GetActorForID(overrideID, HotelObjectDataAsset->HotelTiles);
 				if (actorToSpawn)
 				{
 					AActor* tile = GetWorld()->SpawnActor<AActor>(actorToSpawn, currentSpawnPoint, rotationOverride);
 					CreatedHotelActors[yMult - 1]->Add(tile);
+
+					if (id == "T3E")
+					{
+						entrance = tile->GetActorLocation();
+					}
+					else if (id == "T3X")
+					{
+						exit = tile->GetActorLocation();
+					}
+					else if (id == "T3S")
+					{
+						employee = tile->GetActorLocation();
+					}
 				}
 
 
-				//if (id == "T3E")
-				//{
-				//	entrance = tile->GetActorLocation();
-				//}
-				//else if (id == "T3X")
-				//{
-				//	exit = tile->GetActorLocation();
-				//}
-				//else if (id == "T3S")
-				//{
-				//	employee = tile->GetActorLocation();
-				//}
 			}
 			//Rooms
 			else if (id[0] == 'R')
@@ -104,7 +113,7 @@ void AHotelGenerator::GenerateHotel()
 				if (actorToSpawn)
 				{
 					ARoomActor* room = GetWorld()->SpawnActor<ARoomActor>(actorToSpawn, currentSpawnPoint, rotationOverride);
-					room->roomID = FString::Printf(TEXT("Room%d&d"), i, j);
+					room->roomID = FString::Printf(TEXT("Room%d%d"),xMult,yMult);
 					RoomManager->AddRoom(room);
 					CreatedHotelActors[yMult - 1]->Add(room);
 				}
@@ -126,9 +135,9 @@ void AHotelGenerator::GenerateHotel()
 		xMult = 1;
 	}
 
-	FVector entrance = CreatedHotelActors[0]->GetData()[0]->GetActorLocation();
-	FVector exit = CreatedHotelActors[0]->GetData()[0]->GetActorLocation();
-	FVector employee = CreatedHotelActors[0]->GetData()[1]->GetActorLocation();
+	//FVector entrance = CreatedHotelActors[0]->GetData()[0]->GetActorLocation();
+	//FVector exit = CreatedHotelActors[0]->GetData()[0]->GetActorLocation();
+	//FVector employee = CreatedHotelActors[0]->GetData()[1]->GetActorLocation();
 	PeopleManager->SetPoints(entrance,exit,employee);
 }
 
