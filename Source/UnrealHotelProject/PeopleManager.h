@@ -20,14 +20,14 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(VisibleAnywhere)
-	class UStaticMeshComponent* Floor_Entrance;
+	//UPROPERTY(VisibleAnywhere)
+	//class UStaticMeshComponent* Floor_Entrance;
 
-	UPROPERTY(VisibleAnywhere)
-	class UStaticMeshComponent* Floor_Exit;
+	//UPROPERTY(VisibleAnywhere)
+	//class UStaticMeshComponent* Floor_Exit;
 
-	UPROPERTY(VisibleAnywhere)
-	class UStaticMeshComponent* Employee_Entrance;
+	//UPROPERTY(VisibleAnywhere)
+	//class UStaticMeshComponent* Employee_Entrance;
 
 	UPROPERTY(VisibleAnywhere)
 	class USceneComponent* EntrancePoint;
@@ -69,6 +69,10 @@ public:
 	AHotelManager* HotelManager;
 
 	int GetWaitingGuestCount() { return _GuestWaitingCount; };
+
+	void SetPoints(FVector entrance, FVector exit, FVector employee);
+
+	void StartLogic();
 
 private:
 	APerson* CreatePerson(FVector loc, APerson::PersonType pt);

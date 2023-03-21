@@ -27,7 +27,7 @@ void AHotelManager::BeginPlay()
 	Super::BeginPlay();
 	RoomManger->HotelManager = this;//HotelManagerBP;
 	PeopleManger->HotelManager = this;//HotelManagerBP;
-	_TimeManager = new TimeManager(SunLight, HotelManagerBP);
+	_TimeManager = new TimeManager(SunLight, this);
 	_FinanceManager = new FinanceManager();
 }
 
@@ -135,8 +135,13 @@ bool AHotelManager::ShouldSpawnGuest()
 
 	bool shouldSpawn = true;
 	shouldSpawn &= (int)_TimeManager->GetActualTime() >= CHECKIN_TIME;
-	shouldSpawn &= emptyRoomCount > guestWaiting;
+	shouldSpawn &= emptyRoomCount > guestWaiting-1;
 	return shouldSpawn;
+}
+
+void AHotelManager::StartLogic()
+{
+	PeopleManger->StartLogic();
 }
 
 void AHotelManager::HandleTimedEvents()

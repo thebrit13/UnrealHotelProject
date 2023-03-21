@@ -49,6 +49,8 @@ public:
 
 	bool ShouldSpawnGuest();
 
+	void StartLogic();
+
 	FVector GetCheckInLocation() { return GuestStandLocation->GetComponentLocation(); };
 
 protected:
@@ -61,13 +63,13 @@ protected:
 	UPROPERTY(EditInstanceOnly)
 	APeopleManager* PeopleManger;
 
-	UPROPERTY(EditInstanceOnly)
-	AHotelManager* HotelManagerBP;
+	//UPROPERTY(EditInstanceOnly)
+	//AHotelManager* HotelManagerBP;
 
 	UPROPERTY(EditDefaultsOnly)
 	UStaticMeshComponent* CheckInDesk;
 
-	UPROPERTY(EditInstanceOnly)
+	UPROPERTY(EditDefaultsOnly)
 	USceneComponent* GuestStandLocation;
 
 
