@@ -33,8 +33,8 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent)
 	void RoomClickedBP(bool empty,bool dirty);
 
-	UPROPERTY(EditInstanceOnly)
-	ARoomManager* ARoomManagerBP;
+	//UPROPERTY(EditInstanceOnly)
+	//ARoomManager* ARoomManagerBP;
 
 
 public:	
@@ -59,6 +59,8 @@ public:
 	int GetEmptyRoomCount();
 
 	AHotelManager* HotelManager;
+
+	void AddRoom(ARoomActor* room);
 
 private:
 	struct RoomInfo* LastRoomClicked;

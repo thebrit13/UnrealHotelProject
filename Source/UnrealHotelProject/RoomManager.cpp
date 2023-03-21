@@ -18,21 +18,10 @@ ARoomManager::ARoomManager()
 void ARoomManager::BeginPlay()
 {
 	Super::BeginPlay();
-	for (ARoomActor* actor : RoomList)
-	{
-		//Add to info list
-		RoomInfo* roomInfo = new RoomInfo();
-		roomInfo->ID = actor->roomID;
-		roomInfo->RoomRef = actor;
-		roomInfo->RoomStatus = ARoomManager::RoomStatus::READY;
-		roomInfo->RoomRef->SetStatus("READY");
-		roomInfo->PersonRef = nullptr;
+	//for (ARoomActor* actor : RoomList)
+	//{
 
-		//Assign reference
-		actor->RoomManager = ARoomManagerBP;
-
-		RoomInfoList.Add(roomInfo);
-	}
+	//}
 }
 
 // Called every frame
@@ -84,7 +73,7 @@ bool ARoomManager::CheckOutGuest(FString guestID)
 
 void ARoomManager::RoomClicked(FString roomID)
 {
-	for (RoomInfo* ri : this->RoomInfoList)
+	for (RoomInfo* ri : RoomInfoList)
 	{
 		if (ri->ID == roomID)
 		{
@@ -105,6 +94,22 @@ int ARoomManager::GetEmptyRoomCount()
 		}
 	}
 	return emptyRoomCount;
+}
+
+void ARoomManager::AddRoom(ARoomActor* room)
+{
+	//Add to info list
+	RoomInfo* roomInfo = new RoomInfo();
+	roomInfo->ID = room->roomID;
+	roomInfo->RoomRef = room;
+	roomInfo->RoomStatus = ARoomManager::RoomStatus::READY;
+	roomInfo->RoomRef->SetStatus("READY");
+	roomInfo->PersonRef = nullptr;
+
+	//Assign reference
+	room->RoomManager = this;
+
+	RoomInfoList.Add(roomInfo);
 }
 
 

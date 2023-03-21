@@ -2,6 +2,7 @@
 
 
 #include "HotelGenerator.h"
+#include "Kismet/KismetStringLibrary.h"
 
 // Sets default values
 AHotelGenerator::AHotelGenerator()
@@ -39,25 +40,49 @@ void AHotelGenerator::GenerateHotel()
 	int xMult = 1;
 	int yMult = 1;
 	
-	for (FString line : HotelDataAsset->HotelDataArray)
+	for (int i = 0; i < HotelDataAsset->HotelDataArray.Num();i++)
 	{
+		FString line = HotelDataAsset->HotelDataArray[i];
+		FString lineRot = HotelDataAsset->HotelDataRotationArray[i];
+		//UE_LOG(LogTemp, Warning, TEXT("%s"), *lineRot);
+
+		//Data
 		TArray<FString> SubDataArray;
 		int splitCount = line.ParseIntoArray(SubDataArray, TEXT("*"),true);
+		//Rotation
+		TArray<FString> SubRotationDataArray;
+		int splitCountRot = lineRot.ParseIntoArray(SubRotationDataArray, TEXT("*"), true);
+
+		if (splitCount != splitCountRot)
+		{
+			UE_LOG(LogTemp, Error, TEXT("Data array and rotation array are not equal"));
+			return;
+		}
+
 		CreatedHotelActors.Add(new TArray<AActor*>());
 
 		currentSpawnPoint = FVector(HotelDataAsset->TileSize * xMult, HotelDataAsset->TileSize * yMult, 0);
 
-		for (int i = 0; i < splitCount; i++)
+		for (int j = 0; j < splitCount; j++)
 		{
-			FString id = SubDataArray[i];
+			FString id = SubDataArray[j];
 			currentSpawnPoint = FVector(HotelDataAsset->TileSize * xMult, HotelDataAsset->TileSize * yMult, 0);
+
+			int rotationAmt = UKismetStringLibrary::Conv_StringToInt(SubRotationDataArray[j]);
+			FRotator rotationOverride = FRotator(0,rotationAmt,0);
+
+			//UE_LOG(LogTemp, Warning, TEXT("%s"), *rotationOverride.ToString());
 
 			//Tiles
 			if (id[0] == 'T')
 			{
-				TSubclassOf<AActor> actorToSpawn = GetActorForID(id, HotelDataAsset->HotelTiles);
-				AActor* tile = GetWorld()->SpawnActor<AActor>(actorToSpawn, currentSpawnPoint, FRotator::ZeroRotator);
-				CreatedHotelActors[yMult - 1]->Add(tile);
+				TSubclassOf<AActor> actorToSpawn = GetActorForID(id, HotelObjectDataAsset->HotelTiles);
+				if (actorToSpawn)
+				{
+					AActor* tile = GetWorld()->SpawnActor<AActor>(actorToSpawn, currentSpawnPoint, rotationOverride);
+					CreatedHotelActors[yMult - 1]->Add(tile);
+				}
+
 
 				//if (id == "T3E")
 				//{
@@ -75,7 +100,14 @@ void AHotelGenerator::GenerateHotel()
 			//Rooms
 			else if (id[0] == 'R')
 			{
-
+				TSubclassOf<AActor> actorToSpawn = GetActorForID(id, HotelObjectDataAsset->HotelRooms);
+				if (actorToSpawn)
+				{
+					ARoomActor* room = GetWorld()->SpawnActor<ARoomActor>(actorToSpawn, currentSpawnPoint, rotationOverride);
+					room->roomID = FString::Printf(TEXT("Room%d&d"), i, j);
+					RoomManager->AddRoom(room);
+					CreatedHotelActors[yMult - 1]->Add(room);
+				}
 			}
 			//Misc
 			else if (id[0] == 'M')
@@ -109,6 +141,6 @@ TSubclassOf<AActor> AHotelGenerator::GetActorForID(FString id,TArray<FHotelObjec
 			return fho.ItemActor;
 		}
 	}
-	return NULL;
+	return nullptr;
 }
-
+                                                                                                                                                                                                                                                          

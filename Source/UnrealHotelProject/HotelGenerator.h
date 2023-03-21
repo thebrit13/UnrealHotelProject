@@ -5,8 +5,10 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "HotelDataAsset.h"
+#include "HotelObjectDataAsset.h"
 #include "PeopleManager.h"
 #include "HotelManager.h"
+#include "RoomManager.h"
 #include "NavMesh/NavMeshBoundsVolume.h"
 #include "HotelGenerator.generated.h"
 
@@ -26,11 +28,17 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	UHotelDataAsset* HotelDataAsset;
 
+	UPROPERTY(EditDefaultsOnly)
+	UHotelObjectDataAsset* HotelObjectDataAsset;
+
 	UPROPERTY(EditInstanceOnly)
 	APeopleManager* PeopleManager;
 
 	UPROPERTY(EditInstanceOnly)
 	AHotelManager* HotelManager;
+
+	UPROPERTY(EditInstanceOnly)
+	ARoomManager* RoomManager;
 
 	UPROPERTY(EditInstanceOnly)
 	AVolume* NavMesh;
