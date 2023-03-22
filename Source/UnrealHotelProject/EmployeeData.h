@@ -12,7 +12,7 @@
 class UNREALHOTELPROJECT_API EmployeeData : public PersonData
 {
 public:
-	EmployeeData(FString ID,APeopleManager::EmployeeType et);
+	EmployeeData(FString ID,FString name,APeopleManager::EmployeeType et);
 	~EmployeeData();
 
 	APeopleManager::EmployeeType GetEmployeeType() { return _EmployeeType; };

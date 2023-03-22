@@ -3,7 +3,7 @@
 
 #include "GuestData.h"
 
-GuestData::GuestData(int nights,FString ID): PersonData(ID)
+GuestData::GuestData(int nights,FString ID,FString name): PersonData(ID,name)
 {
 	NightsLeft = nights;
 }

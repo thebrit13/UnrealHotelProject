@@ -10,7 +10,7 @@
 class UNREALHOTELPROJECT_API PersonData
 {
 public:
-	PersonData(FString id);
+	PersonData(FString id,FString name);
 	~PersonData();
 
 	FString ID;

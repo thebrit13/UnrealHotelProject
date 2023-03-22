@@ -3,10 +3,10 @@
 
 #include "PersonData.h"
 
-PersonData::PersonData(FString id)
+PersonData::PersonData(FString id,FString name)
 {
 	ID = id;
-	Name = FString::Printf(TEXT("Name %s"), *ID);
+	Name = name;
 }
 
 PersonData::~PersonData()

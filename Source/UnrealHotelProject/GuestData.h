@@ -11,8 +11,8 @@
 class UNREALHOTELPROJECT_API GuestData: public PersonData
 {
 public:
-	GuestData(int nights, FString ID);
+	GuestData(int nights, FString ID,FString name);
 	~GuestData();
 	
-	int NightsLeft;
+	int NightsLeft = 0;
 };

@@ -35,6 +35,8 @@ void APeopleManager::BeginPlay()
 {
 	Super::BeginPlay();
 
+	ReadInNames();
+
 }
 
 // Called every frame
@@ -112,7 +114,7 @@ void APeopleManager::StartLogic()
 APerson* APeopleManager::CreatePerson(FVector loc,APerson::PersonType pt)
 {
 	APerson* createdPerson = GetWorld()->SpawnActor<APerson>(Person1Character, loc, FRotator(0, 180, 0));
-	createdPerson->Setup(pt, FString::FromInt(AllCreatedPeople.Num() + 1));
+	createdPerson->Setup(pt, FString::FromInt(AllCreatedPeople.Num() + 1), GetRandomName());
 	AllCreatedPeople.Add(createdPerson);
 	return createdPerson;
 }
@@ -139,5 +141,37 @@ void APeopleManager::CreateEmployee(EmployeeType et)
 {
 	APerson* person = CreatePerson(EmployeePoint->GetComponentLocation(), APerson::PersonType::EMPLOYEE);
 	EmployeeList.Add(person);
+}
+
+void APeopleManager::ReadInNames()
+{
+	FString file = FPaths::ProjectContentDir();
+	file.Append(TEXT("DataFiles/first-names.txt"));
+	IPlatformFile& FileManager = FPlatformFileManager::Get().GetPlatformFile();
+
+	if (FileManager.FileExists(*file))
+	{
+		if (FFileHelper::LoadFileToStringArray(FirstNames, *file))
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Successfully loaded names"));
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Could not load first names file"));
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Could not find first names file"));
+	}
+}
+
+FString APeopleManager::GetRandomName()
+{
+	if (FirstNames.Num() > 0)
+	{
+		return FirstNames[FMath::RandRange(0, FirstNames.Num() - 1)];
+	}
+	return TEXT("Bob");
 }
 

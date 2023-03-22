@@ -34,6 +34,13 @@ void APerson::MoveToLocationComplete(bool success)
 	IsMoving = false;
 }
 
+FPersonDataPackage APerson::GetPersonDataPackage()
+{
+	FPersonDataPackage package;
+	package.Name = (_GuestData ? _GuestData->Name : (_EmployeeData ? _EmployeeData->Name : (_PersonData ? _PersonData->Name : TEXT("ERROR"))));
+	return package;
+}
+
 // Called every frame
 void APerson::Tick(float DeltaTime)
 {
@@ -45,21 +52,27 @@ void APerson::Tick(float DeltaTime)
 	}
 }
 
-void APerson::Setup(PersonType personType,FString personID)
+void APerson::Setup(PersonType personType,FString personID,FString name)
 {
+	//weird case, but checking just in case
+	if (!this)
+	{
+		return;
+	}
+
 	switch (personType)
 	{
 		case APerson::GUEST:
-			_GuestData = new GuestData(FMath::RandRange(1,3), personID);
+			_GuestData = new GuestData(FMath::RandRange(1,3), personID,name);
 			break;
 		case APerson::EMPLOYEE:
-			_EmployeeData = new EmployeeData(personID,APeopleManager::EmployeeType::HOUSEKEEP);
+			_EmployeeData = new EmployeeData(personID,name,APeopleManager::EmployeeType::HOUSEKEEP);
 			break;
 		case APerson::OTHER:
-			_PersonData = new PersonData(personID);
+			_PersonData = new PersonData(personID,name);
 			break;
 		default:
-			_PersonData = new PersonData(personID);
+			_PersonData = new PersonData(personID,name);
 			break;
 	}
 }

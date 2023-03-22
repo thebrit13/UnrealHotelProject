@@ -3,7 +3,7 @@
 
 #include "EmployeeData.h"
 
-EmployeeData::EmployeeData(FString ID,APeopleManager::EmployeeType et):PersonData(ID)
+EmployeeData::EmployeeData(FString ID,FString name,APeopleManager::EmployeeType et):PersonData(ID,name)
 {
 	_EmployeeType = et;
 }

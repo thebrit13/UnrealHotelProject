@@ -8,6 +8,15 @@
 #include "TaskManager.h"
 #include "Person.generated.h"
 
+USTRUCT(BlueprintType)
+struct FPersonDataPackage
+{
+	GENERATED_USTRUCT_BODY()
+
+	UPROPERTY(BlueprintReadOnly)
+	FString Name;
+};
+
 UCLASS()
 class UNREALHOTELPROJECT_API APerson : public ACharacter
 {
@@ -23,6 +32,8 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void MoveToLocationComplete(bool success);
 
+	UFUNCTION(BlueprintCallable)
+	FPersonDataPackage GetPersonDataPackage();
 public:	
 
 	enum PersonType
@@ -38,7 +49,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	void Setup(PersonType personType,FString personID);
+	void Setup(PersonType personType,FString personID,FString name);
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -61,11 +72,11 @@ public:
 
 private:
 	TFunction<void(bool)> _CurrentCallback;
-	GuestData* _GuestData;
-	class PersonData* _PersonData;
-	class EmployeeData* _EmployeeData;
+	GuestData* _GuestData = nullptr;
+	class PersonData* _PersonData = nullptr;
+	class EmployeeData* _EmployeeData = nullptr;
 
-	class TaskManager* _TaskManager;
-
-
+	class TaskManager* _TaskManager = nullptr;
 };
+
+

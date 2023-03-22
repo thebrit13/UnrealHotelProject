@@ -40,11 +40,11 @@ private:
 
 	int _DayCount = 0;
 
-	ADirectionalLight* SunLight;
+	ADirectionalLight* SunLight = nullptr;
 
 	void SetSunRotation();
 
 	void UpdateActualTime(float time);
 		
-	AHotelManager* _HotelManagerRef;
+	AHotelManager* _HotelManagerRef = nullptr;
 };

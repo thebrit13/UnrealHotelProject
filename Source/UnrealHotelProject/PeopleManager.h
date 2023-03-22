@@ -78,6 +78,8 @@ private:
 	APerson* CreatePerson(FVector loc, APerson::PersonType pt);
 	void CreateGuest();
 	void CreateEmployee(EmployeeType et);
+	void ReadInNames();
+	FString GetRandomName();
 
 	TArray<APerson*> GuestList;
 
@@ -91,8 +93,7 @@ private:
 
 	const float MIN_NEXT_PERSON_TIME = 2.0f;
 	const float MAX_NEXT_PERSON_TIME = 5.0f;
-	float _NextCreationTime;
-	float _CurrentTick;
-
-	
+	float _NextCreationTime = 0;
+	float _CurrentTick = 0;	
+	TArray<FString> FirstNames;
 };
